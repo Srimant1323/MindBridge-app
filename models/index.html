@@ -4,17 +4,44 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MindBridge — AI Mental Wellness Platform</title>
-  <meta name="description" content="MindBridge: An AI-powered mental wellness platform with emotion detection, PHQ-9 screening, vocal biomarkers, lifestyle tracking & evidence-based support. Private, on-device." />
-  <meta name="theme-color" content="#080910" />
+  <meta name="description" content="MindBridge: AI-powered mental wellness with emotion detection, PHQ-9 screening, vocal biomarkers &amp; private journaling. 100% on-device. Free." />
+  <meta name="keywords" content="mental health, AI wellness, PHQ-9, depression screening, emotion AI, journaling, mindfulness" />
+  <meta name="theme-color" content="#c084fc" />
+  <meta name="author" content="MindBridge Research" />
+  <meta name="robots" content="index, follow" />
+
+  <!-- Open Graph -->
+  <meta property="og:type"        content="website" />
+  <meta property="og:title"       content="MindBridge — AI Mental Wellness Platform" />
+  <meta property="og:description" content="Private AI mental wellness. PHQ-9 + emotion AI + vocal biomarkers. Everything stays on your device." />
+  <meta property="og:url"         content="https://mindbridge.app" />
+  <meta property="og:image"       content="icons/icon.svg" />
+  <meta property="og:site_name"   content="MindBridge" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card"        content="summary" />
+  <meta name="twitter:title"       content="MindBridge — AI Mental Wellness" />
+  <meta name="twitter:description" content="Private, on-device AI mental wellness platform. No uploads, no tracking." />
+  <meta name="twitter:image"       content="icons/icon.svg" />
+
   <!-- PWA -->
   <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="MindBridge" />
+  <meta name="application-name" content="MindBridge" />
+
+  <!-- Fonts: Nunito (UI) + Inter (data/numbers) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800;900&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
+  <!-- Premium Visual Upgrade -->
+  <link rel="stylesheet" href="css/premium_ui.css" />
+  <link rel="stylesheet" href="css/clinical_features.css" />
 </head>
 <body>
 
@@ -124,16 +151,32 @@
     </div>
 
     <div class="sidebar-bottom">
+      <!-- Privacy trust badge -->
+      <div class="sb-privacy-badge">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span>100% On-Device · Zero Uploads</span>
+      </div>
+
       <div class="ai-status-pill" id="ai-status-badge" data-status="loading">
         <span class="status-dot" id="ai-status-dot"></span>
         <span id="ai-status-label">AI Loading…</span>
       </div>
+
       <div class="sidebar-user">
         <div class="user-avatar">🧠</div>
         <div class="user-info">
           <span class="user-name">Anonymous User</span>
-          <span class="user-sub">🔒 100% Private · On-Device</span>
+          <span class="user-sub">Private Research Tool</span>
         </div>
+      </div>
+
+      <!-- Export + Version row -->
+      <div class="sb-footer-row">
+        <button class="sb-export-btn" onclick="app.exportData()" title="Download all your data as JSON">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Export Data
+        </button>
+        <span class="sb-version">v2.3</span>
       </div>
     </div>
   </aside>
@@ -187,14 +230,19 @@
         </div>
         <div class="hero-trust-row">
           <span class="trust-chip">🔒 100% On-Device</span>
-          <span class="trust-chip">🧠 BERT Transformer AI</span>
-          <span class="trust-chip">🏥 WHO-Validated Tools</span>
+          <span class="trust-chip">🧠 Transformer Emotion Model</span>
+          <span class="trust-chip">🏥 Validated Questionnaires (PHQ-9 / GAD-7)</span>
           <span class="trust-chip">📊 Multi-modal Fusion</span>
         </div>
       </div>
 
       <!-- ─── LIVE STATS BAR ─────────────────────────────────── (Purple Tinted) -->
-      <div class="landing-stats-bar">
+            <!-- Dashboard Greeting -->
+      <div class="dashboard-greeting-row">
+        <span id="dashboard-greeting" class="dash-greeting">Good day 👋</span>
+        <span id="dashboard-date" class="dash-date"></span>
+      </div>
+<div class="landing-stats-bar">
         <div class="lsb-inner">
           <div class="lsb-item">
             <div class="lsb-val" id="stat-total-val">0</div>
@@ -242,17 +290,17 @@
             </p>
             <p class="section-body">
               Designed for <strong>individuals, wellness circles, college counselors, and researchers</strong>,
-              MindBridge processes text and vocal inputs entirely on-device — no data ever leaves the browser.
-              This ensures HIPAA-compatible privacy by architecture, not policy.
+              MindBridge processes text and vocal inputs entirely on-device — your entries are not uploaded anywhere.
+              Your text and voice are analysed on your device; the AI model files are downloaded once from a public CDN.
             </p>
             <div class="about-highlights">
               <div class="about-highlight-item">
                 <span class="ah-icon" style="color:var(--ocean)">🎓</span>
-                <div><strong>Research-Backed</strong><br/><small>PHQ-9, GAD-7, BERT emotion models, prosodic biomarkers</small></div>
+                <div><strong>Research-Backed</strong><br/><small>PHQ-9, GAD-7, transformer emotion models, prosodic biomarkers</small></div>
               </div>
               <div class="about-highlight-item">
                 <span class="ah-icon" style="color:var(--purple)">🔬</span>
-                <div><strong>Multi-modal Fusion</strong><br/><small>Text + Audio + Clinical questionnaire data fused into one composite score</small></div>
+                <div><strong>Multi-modal Fusion</strong><br/><small>Text + Voice + Face (+ PHQ-9 / GAD-7 results shown alongside) fused into one composite score</small></div>
               </div>
               <div class="about-highlight-item">
                 <span class="ah-icon" style="color:var(--amber)">🌐</span>
@@ -262,14 +310,14 @@
           </div>
           <div class="about-stat-col">
             <div class="about-stat-card" style="border-color:rgba(6,214,160,0.4);background:rgba(6,214,160,0.05)">
-              <div class="asc-num" style="color:var(--ocean)">BERT</div>
+              <div class="asc-num" style="color:var(--ocean)">AI</div>
               <div class="asc-label">Transformer Model</div>
-              <div class="asc-desc">j-hartmann/emotion-english-distilroberta-base via Transformers.js — 6-class emotion classification</div>
+              <div class="asc-desc">DistilRoBERTa emotion classifier (j-hartmann model, ONNX export) via Transformers.js. The exact model that loaded is shown on every report; if it cannot load, the report says NLP-Inferred.</div>
             </div>
             <div class="about-stat-card" style="border-color:rgba(192,132,252,0.4);background:rgba(192,132,252,0.05)">
               <div class="asc-num" style="color:var(--purple)">PHQ-9</div>
               <div class="asc-label">+ GAD-7 Validated Scales</div>
-              <div class="asc-desc">Kroenke et al. 2002 · Spitzer et al. 2006 — WHO-endorsed standard instruments</div>
+              <div class="asc-desc">Kroenke et al. 2002 · Spitzer et al. 2006 — widely used standard instruments</div>
             </div>
             <div class="about-stat-card" style="border-color:rgba(251,191,36,0.4);background:rgba(251,191,36,0.05)">
               <div class="asc-num" style="color:var(--amber)">100+</div>
@@ -277,8 +325,8 @@
               <div class="asc-desc">Clinical Hindi-English NLP dictionary for sentiment, risk, and protective factor detection</div>
             </div>
             <div class="about-stat-card" style="border-color:rgba(244,113,181,0.4);background:rgba(244,113,181,0.05)">
-              <div class="asc-num" style="color:var(--rose)">0ms</div>
-              <div class="asc-label">Server Latency</div>
+              <div class="asc-num" style="color:var(--rose)">0</div>
+              <div class="asc-label">Text or Audio Uploads</div>
               <div class="asc-desc">All inference runs in-browser — WebAudio API, localStorage, Canvas 2D, zero cloud dependency</div>
             </div>
           </div>
@@ -294,7 +342,7 @@
         </div>
         <h2 class="section-heading section-heading-purple">How MindBridge Processes Your Data</h2>
         <p class="section-body" style="max-width:700px;margin:0 auto 40px;text-align:center">
-          A robust 5-stage multi-modal inference pipeline converts raw user input into a
+          A 5-stage multi-modal inference pipeline converts raw user input into a
           clinically-informed composite risk score — entirely on-device.
         </p>
         <div class="pipeline-cards">
@@ -313,8 +361,8 @@
             <div class="pipe-step-num">02</div>
             <div class="pipe-icon">🔤</div>
             <h4 class="pipe-title">NLP Text Analysis</h4>
-            <p class="pipe-desc">TF-IDF style lexicon matching on a 100+ entry bilingual clinical dictionary. Computes term-frequency risk scores, identifies trigger and protective language patterns. Score normalized to 0–100.</p>
-            <div class="pipe-tags"><span>Lexicon NLP</span><span>TF-IDF</span><span>Risk Scoring</span></div>
+            <p class="pipe-desc">Lexicon and phrase-pattern matching (with negation handling) on a bilingual Hindi-English clinical dictionary. Computes length-normalised risk scores, identifies trigger and protective language patterns. Score normalized to 0–100.</p>
+            <div class="pipe-tags"><span>Lexicon NLP</span><span>Negation</span><span>Risk Scoring</span></div>
           </div>
 
           <div class="pipe-arrow">→</div>
@@ -323,7 +371,7 @@
             <div class="pipe-step-num">03</div>
             <div class="pipe-icon">🧠</div>
             <h4 class="pipe-title">Emotion AI Inference</h4>
-            <p class="pipe-desc">DistilRoBERTa transformer model (Transformers.js, ONNX runtime) classifies text into 6 emotion categories: Sadness, Joy, Love, Anger, Fear, Surprise. Falls back to NLP-inferred profile if model loading.</p>
+            <p class="pipe-desc">A DistilRoBERTa transformer (Transformers.js, ONNX runtime) classifies text into emotions (Sadness, Joy, Anger, Fear, Surprise; Love when the model supports it). Falls back to NLP-inferred profile if model loading.</p>
             <div class="pipe-tags"><span>DistilRoBERTa</span><span>ONNX</span><span>6-class</span></div>
           </div>
 
@@ -333,7 +381,7 @@
             <div class="pipe-step-num">04</div>
             <div class="pipe-icon">🎙️</div>
             <h4 class="pipe-title">Vocal Biomarker Analysis</h4>
-            <p class="pipe-desc">Prosodic feature extraction from raw PCM audio: fundamental frequency (F0), jitter, shimmer, speech rate, energy envelope, and pause ratio. Correlated with dysphonia markers in clinical literature.</p>
+            <p class="pipe-desc">Prosodic feature extraction from raw microphone audio: fundamental frequency (F0, autocorrelation), frame-level jitter and shimmer, speech rate, energy and pause ratio. Experimental: measured with a browser microphone, so values are not comparable to lab (Praat) measurements and are not clinically validated.</p>
             <div class="pipe-tags"><span>F0/Jitter</span><span>Shimmer</span><span>Prosody</span></div>
           </div>
 
@@ -343,7 +391,7 @@
             <div class="pipe-step-num">05</div>
             <div class="pipe-icon">📊</div>
             <h4 class="pipe-title">Composite Score Fusion</h4>
-            <p class="pipe-desc">Weighted fusion: <code>Score = 0.4×EmotionAI + 0.4×NLP + 0.2×Vocal</code>. Maps to 4-level clinical risk: Low / Moderate / High / Severe with actionable recommendations and helpline escalation.</p>
+            <p class="pipe-desc">Weighted fusion: <code>Score = 0.4×Text + 0.3×Voice + 0.3×Face</code>, where Text = 0.5×NLP lexicon + 0.5×Emotion model (weights are hand-chosen, not fitted to data). Maps to 4-level clinical risk: Low / Moderate / High / Severe with actionable recommendations and helpline escalation.</p>
             <div class="pipe-tags"><span>Weighted Fusion</span><span>Risk Bands</span><span>Escalation</span></div>
           </div>
 
@@ -368,19 +416,19 @@
           <div class="feature-card">
             <div class="fc-icon" style="background:rgba(6,214,160,0.12);color:var(--ocean);border-color:rgba(6,214,160,0.3)">🧠</div>
             <h4>Transformer Emotion AI</h4>
-            <p>BERT-based DistilRoBERTa model loaded via Transformers.js (ONNX). Real-time 6-class emotion classification with confidence scores. NLP fallback for offline/loading states.</p>
+            <p>DistilRoBERTa model loaded via Transformers.js (ONNX). Real-time 6-class emotion classification with confidence scores. NLP fallback for offline/loading states.</p>
             <div class="fc-status fc-status-live">● Live</div>
           </div>
           <div class="feature-card">
             <div class="fc-icon" style="background:rgba(192,132,252,0.12);color:var(--purple);border-color:rgba(192,132,252,0.3)">📋</div>
             <h4>PHQ-9 + GAD-7 Screening</h4>
-            <p>Full WHO-endorsed 16-question depression and anxiety screening. Crisis detection on Question 9 with immediate helpline escalation. Scores saved to history with trend tracking.</p>
+            <p>Full 16-question depression and anxiety screening. Crisis detection on Question 9 with immediate helpline escalation. Scores saved to history with trend tracking.</p>
             <div class="fc-status fc-status-live">● Live</div>
           </div>
           <div class="feature-card">
             <div class="fc-icon" style="background:rgba(251,191,36,0.12);color:var(--amber);border-color:rgba(251,191,36,0.3)">🎙️</div>
             <h4>Vocal Biomarker Engine</h4>
-            <p>WebAudio API pipeline: PCM capture → pitch extraction → jitter/shimmer computation → speech rate → energy envelope. Experimental prosodic biomarkers correlated with depressive states.</p>
+            <p>WebAudio API pipeline: PCM capture → F0 (autocorrelation) → jitter/shimmer → speech rate → pause ratio. Experimental prosodic biomarkers correlated with depressive states.</p>
             <div class="fc-status fc-status-exp">⚗ Experimental</div>
           </div>
           <div class="feature-card">
@@ -398,13 +446,13 @@
           <div class="feature-card">
             <div class="fc-icon" style="background:rgba(6,214,160,0.12);color:var(--ocean);border-color:rgba(6,214,160,0.3)">🌐</div>
             <h4>Bilingual NLP Lexicon</h4>
-            <p>100+ entry clinical Hindi-English dictionary with term-specific risk weights. Covers emotions, somatic symptoms, protective factors, and crisis language. TF-IDF normalized scoring.</p>
+            <p>100+ entry clinical Hindi-English dictionary with term-specific risk weights. Covers emotions, somatic symptoms, protective factors, and crisis language. Length-normalised scoring.</p>
             <div class="fc-status fc-status-live">● Live</div>
           </div>
           <div class="feature-card">
             <div class="fc-icon" style="background:rgba(192,132,252,0.12);color:var(--purple);border-color:rgba(192,132,252,0.3)">🆘</div>
             <h4>Crisis Detection & Escalation</h4>
-            <p>Real-time monitoring for PHQ-9 Q9 (self-harm ideation), BERT-detected fear/extreme-sadness, and NLP crisis terms. Instant escalation to verified Indian helplines with direct tel: links.</p>
+            <p>Real-time monitoring for PHQ-9 Q9 (self-harm ideation), model-detected fear/extreme-sadness, and NLP crisis terms. Instant escalation to verified Indian helplines with direct tel: links.</p>
             <div class="fc-status fc-status-live">● Live</div>
           </div>
           <div class="feature-card">
@@ -432,7 +480,7 @@
             <div class="tech-icon">🤗</div>
             <div class="tech-name">Transformers.js</div>
             <div class="tech-cat">NLP / AI</div>
-            <div class="tech-desc">ONNX runtime for BERT emotion inference in-browser</div>
+            <div class="tech-desc">ONNX runtime for emotion-model inference in-browser</div>
           </div>
           <div class="tech-item">
             <div class="tech-icon">🎵</div>
@@ -460,15 +508,15 @@
           </div>
           <div class="tech-item">
             <div class="tech-icon">🧬</div>
-            <div class="tech-name">DistilRoBERTa</div>
+            <div class="tech-name">Emotion Transformer</div>
             <div class="tech-cat">Transformer Model</div>
-            <div class="tech-desc">j-hartmann/emotion-english — 6-class emotion classifier</div>
+            <div class="tech-desc">DistilRoBERTa emotion classifier (j-hartmann)</div>
           </div>
           <div class="tech-item">
             <div class="tech-icon">📊</div>
             <div class="tech-name">PHQ-9 / GAD-7</div>
             <div class="tech-cat">Clinical Instruments</div>
-            <div class="tech-desc">Kroenke (2002), Spitzer (2006) — WHO-endorsed depression & anxiety scales</div>
+            <div class="tech-desc">Kroenke (2002), Spitzer (2006) — widely used depression & anxiety scales</div>
           </div>
           <div class="tech-item">
             <div class="tech-icon">💡</div>
@@ -491,10 +539,44 @@
             <h2 class="section-heading section-heading-ocean" style="margin-bottom:6px">Your Wellness Dashboard</h2>
             <p class="section-body" style="margin:0">Real-time aggregation of all sessions from your device.</p>
           </div>
-          <button class="btn btn-primary btn-new-checkin" onclick="app.navigate('checkin')">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            New Check-in
-          </button>
+          <div class="dash-hdr-btns">
+            <button class="btn btn-secondary" onclick="clinicalSummary.openModal()" title="Export HL7 FHIR &amp; 1-page clinical summary">
+              🩺 Clinical Summary
+            </button>
+            <button class="btn btn-secondary btn-wrap" onclick="WrapEngine.launch()" title="View your monthly emotional story">
+              ✨ Monthly Wrap
+            </button>
+            <button class="btn btn-primary btn-new-checkin" onclick="app.navigate('checkin')">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              New Check-in
+            </button>
+          </div>
+        </div>
+
+        <!-- ── Micro Check-in + Streak Badge ─────────────────────────────── -->
+        <div class="micro-streak-row">
+          <!-- Quick mood log -->
+          <div class="glass-card micro-card">
+            <div class="micro-card-header">
+              <span class="micro-card-icon">⚡</span>
+              <div>
+                <h3 class="micro-card-title">Quick Mood Log</h3>
+                <p class="micro-card-sub">One tap — no writing needed</p>
+              </div>
+            </div>
+            <div id="micro-widget"><!-- filled by streak.js --></div>
+          </div>
+          <!-- Streak badge -->
+          <div class="glass-card streak-badge-card">
+            <div class="micro-card-header">
+              <span class="micro-card-icon">🏅</span>
+              <div>
+                <h3 class="micro-card-title">Consistency Streak</h3>
+                <p class="micro-card-sub">Check in daily to level up</p>
+              </div>
+            </div>
+            <div id="streak-badge-widget"><!-- filled by streak.js --></div>
+          </div>
         </div>
 
         <!-- Stat cards row -->
@@ -636,7 +718,11 @@
             <div class="ethics-principles">
               <div class="ep-item"><span class="ep-num" style="color:var(--ocean)">01</span><div><strong>Accessibility</strong> — Works on any device with a browser. No app install. No data plan concern. Fully offline after first load.</div></div>
               <div class="ep-item"><span class="ep-num" style="color:var(--purple)">02</span><div><strong>Stigma Reduction</strong> — Private, anonymous analysis removes the barrier of social stigma that prevents millions from seeking help.</div></div>
-              <div class="ep-item"><span class="ep-num" style="color:var(--amber)">03</span><div><strong>Evidence-Based</strong> — Every feature references peer-reviewed clinical literature. Transparent AI, no black-box decisions.</div></div>
+              <div class="ep-item"><span class="ep-num" style="color:var(--amber)">03</span><div><strong>Evidence-Based</strong> — Every feature references peer-reviewed clinical literature. Word-level explanations show which words influenced the score.</div></div>
+            </div>
+            <div class="ethics-disclaimer" id="about-live-status" style="margin-bottom:12px">
+              🔎 <strong>What is running right now:</strong> <span id="about-model-status">checking emotion model…</span><br/>
+              <strong>Known limitations:</strong> fusion weights are hand-chosen, not fitted to data · voice and face measures are experimental (browser microphone / camera) · the word-list scoring is a heuristic, not the trained model from the paper · none of the composite scores have been validated in a clinical study.
             </div>
             <div class="ethics-disclaimer">
               ⚠️ MindBridge is a <strong>screening and support tool</strong>, not a clinical diagnostic instrument. PHQ-9 and GAD-7 results should be reviewed by a qualified mental health professional. If you are in crisis, use the 🆘 Help Now button immediately.
@@ -651,7 +737,7 @@
               <button class="btn btn-ghost" style="width:100%;justify-content:center" onclick="app.navigate('phq9')">📋 PHQ-9 Clinical Screen</button>
               <div class="cta-refs">
                 <strong>References</strong>
-                <p>Kroenke K, et al. Psychosomatics 2002 · Spitzer RL, et al. Arch Intern Med 2006 · Pennebaker JW, APA 2004 · Wolf M, et al. EMNLP 2022 (DistilRoBERTa)</p>
+                <p>Kroenke K, et al. Psychosomatics 2002 · Spitzer RL, et al. Arch Intern Med 2006 · Pennebaker JW, APA 2004 · Wolf M, et al. EMNLP 2020 (Transformers) · Hartmann J. 2022 (emotion-english-distilroberta-base)</p>
               </div>
             </div>
           </div>
@@ -668,9 +754,13 @@
           <h1 class="page-title">How are you feeling?</h1>
           <p class="page-subtitle">Share in your own words — nothing leaves your device.</p>
         </div>
-        <div class="lang-toggle" role="group" aria-label="Language">
-          <button class="lang-btn active" id="lang-en" onclick="app.setLanguage('en')">English</button>
-          <button class="lang-btn" id="lang-hi" onclick="app.setLanguage('hi')">हिंदी</button>
+        <div class="lang-toggle" role="group" aria-label="Language" style="flex-wrap:wrap;gap:4px;max-width:300px">
+          <button class="lang-btn active" id="lang-en" onclick="app.setLanguage('en')">🇬🇧 EN</button>
+          <button class="lang-btn" id="lang-hi" onclick="app.setLanguage('hi')">🇮🇳 हि</button>
+          <button class="lang-btn" id="lang-es" onclick="app.setLanguage('es')">🇪🇸 ES</button>
+          <button class="lang-btn" id="lang-fr" onclick="app.setLanguage('fr')">🇫🇷 FR</button>
+          <button class="lang-btn" id="lang-te" onclick="app.setLanguage('te')">🇮🇳 తె</button>
+          <button class="lang-btn" id="lang-bn" onclick="app.setLanguage('bn')">🇧🇩 বা</button>
         </div>
       </div>
 
@@ -682,6 +772,133 @@
             <label class="name-label" for="respondent-name">Your Name <span class="name-optional">(optional — helps track your circle's records)</span></label>
             <input type="text" id="respondent-name" class="name-input" placeholder="E.g. Deepika, Milind, or leave blank for Anonymous" maxlength="40" autocomplete="name" />
           </div>
+        </div>
+      </div>
+
+      <!-- ── Demographic Profile Card ─────────────────────────────────────── -->
+      <div class="glass-card demo-card" id="demo-profile-card">
+        <div class="demo-card-header-static">
+          <span class="demo-card-icon">📊</span>
+          <div>
+            <h3 class="demo-card-title">Your Demographic Profile</h3>
+            <p class="demo-card-sub">Helps contextualise your results with India population-level risk data · All optional</p>
+          </div>
+        </div>
+
+        <!-- Age Group -->
+        <div class="demo-field">
+          <label class="demo-field-label">Age Group</label>
+          <div class="demo-chips" id="chips-age">
+            <button class="demo-chip" data-group="age" data-value="under18"  onclick="selectChip(this)">Under 18</button>
+            <button class="demo-chip" data-group="age" data-value="18-24"    onclick="selectChip(this)">18–24</button>
+            <button class="demo-chip" data-group="age" data-value="25-34"    onclick="selectChip(this)">25–34</button>
+            <button class="demo-chip" data-group="age" data-value="35-44"    onclick="selectChip(this)">35–44</button>
+            <button class="demo-chip" data-group="age" data-value="45-59"    onclick="selectChip(this)">45–59</button>
+            <button class="demo-chip" data-group="age" data-value="60plus"   onclick="selectChip(this)">60+</button>
+          </div>
+        </div>
+
+        <!-- Gender -->
+        <div class="demo-field">
+          <label class="demo-field-label">Gender</label>
+          <div class="demo-chips" id="chips-gender">
+            <button class="demo-chip" data-group="gender" data-value="female"     onclick="selectChip(this)">Female</button>
+            <button class="demo-chip" data-group="gender" data-value="male"       onclick="selectChip(this)">Male</button>
+            <button class="demo-chip" data-group="gender" data-value="nonbinary"  onclick="selectChip(this)">Non-binary</button>
+            <button class="demo-chip" data-group="gender" data-value="prefer_not" onclick="selectChip(this)">Prefer not to say</button>
+          </div>
+        </div>
+
+        <!-- Occupation -->
+        <div class="demo-field">
+          <label class="demo-field-label">Occupation</label>
+          <div class="demo-chips" id="chips-occupation">
+            <button class="demo-chip" data-group="occupation" data-value="student"        onclick="selectChip(this)">🎓 Student</button>
+            <button class="demo-chip" data-group="occupation" data-value="school_teacher" onclick="selectChip(this)">📚 School Teacher</button>
+            <button class="demo-chip" data-group="occupation" data-value="college_faculty"onclick="selectChip(this)">🏫 College Faculty</button>
+            <button class="demo-chip" data-group="occupation" data-value="healthcare"     onclick="selectChip(this)">🏥 Healthcare Worker</button>
+            <button class="demo-chip" data-group="occupation" data-value="it_tech"        onclick="selectChip(this)">💻 IT / Tech</button>
+            <button class="demo-chip" data-group="occupation" data-value="business"       onclick="selectChip(this)">💼 Business / Self-employed</button>
+            <button class="demo-chip" data-group="occupation" data-value="government"     onclick="selectChip(this)">🏛️ Government / PSU</button>
+            <button class="demo-chip" data-group="occupation" data-value="homemaker"      onclick="selectChip(this)">🏠 Homemaker</button>
+            <button class="demo-chip" data-group="occupation" data-value="unemployed"     onclick="selectChip(this)">🔍 Unemployed</button>
+            <button class="demo-chip" data-group="occupation" data-value="other"          onclick="selectChip(this)">💡 Other</button>
+          </div>
+        </div>
+
+        <!-- Area -->
+        <div class="demo-field">
+          <label class="demo-field-label">Area / Location</label>
+          <div class="demo-chips" id="chips-area">
+            <button class="demo-chip" data-group="area" data-value="urban_metro" onclick="selectChip(this)">🏙️ Urban Metro</button>
+            <button class="demo-chip" data-group="area" data-value="urban_town"  onclick="selectChip(this)">🏘️ Urban Town</button>
+            <button class="demo-chip" data-group="area" data-value="semi_rural"  onclick="selectChip(this)">🌿 Semi-rural</button>
+            <button class="demo-chip" data-group="area" data-value="rural"       onclick="selectChip(this)">🌾 Rural</button>
+          </div>
+        </div>
+
+        <p class="demo-optional-note">🔒 Saved for future check-ins · Nothing leaves your device</p>
+      </div>
+
+      <!-- ── Lifestyle Risk Panel (Phase 1 — XGBoost features) ──────────────── -->
+      <div class="glass-card lifestyle-card" id="lifestyle-card">
+        <div class="lifestyle-card-header" onclick="toggleLifestyleCard()">
+          <div class="lifestyle-card-header-left">
+            <span class="lifestyle-card-icon">🌿</span>
+            <div>
+              <h3 class="lifestyle-card-title">Lifestyle Risk Factors</h3>
+              <p class="lifestyle-card-sub">Sleep · Activity · Stress · Social support — Phase 1 of the XAI framework</p>
+            </div>
+          </div>
+          <span class="lifestyle-toggle-arrow" id="lifestyle-toggle-arrow">▼</span>
+        </div>
+
+        <div class="lifestyle-card-body" id="lifestyle-card-body">
+          <!-- Sleep -->
+          <div class="ls-field">
+            <div class="ls-field-header">
+              <label class="ls-label">😴 Sleep Duration</label>
+              <span class="ls-value-badge" id="sleep-val-badge">7h</span>
+            </div>
+            <input type="range" class="ls-slider" id="sleep-slider" min="0" max="12" step="0.5" value="7"
+              oninput="updateSlider('sleep',this.value,'h')">
+            <div class="ls-slider-labels"><span>0h</span><span>Optimal 7-9h</span><span>12h</span></div>
+          </div>
+
+          <!-- Physical Activity -->
+          <div class="ls-field">
+            <label class="ls-label">🏃 Physical Activity</label>
+            <div class="demo-chips" id="chips-activity">
+              <button class="demo-chip" data-group="activity" data-value="none"     onclick="selectChip(this)">None</button>
+              <button class="demo-chip" data-group="activity" data-value="light"    onclick="selectChip(this)">Light</button>
+              <button class="demo-chip" data-group="activity" data-value="moderate" onclick="selectChip(this)">Moderate</button>
+              <button class="demo-chip" data-group="activity" data-value="intense"  onclick="selectChip(this)">Intense</button>
+            </div>
+          </div>
+
+          <!-- Stress Level -->
+          <div class="ls-field">
+            <div class="ls-field-header">
+              <label class="ls-label">⚡ Stress Level</label>
+              <span class="ls-value-badge" id="stress-val-badge">5 / 10</span>
+            </div>
+            <input type="range" class="ls-slider ls-slider-stress" id="stress-slider" min="1" max="10" step="1" value="5"
+              oninput="updateSlider('stress',this.value,'/10')">
+            <div class="ls-slider-labels"><span>Low</span><span>Moderate</span><span>High</span></div>
+          </div>
+
+          <!-- Social Support -->
+          <div class="ls-field">
+            <label class="ls-label">🤝 Social Support</label>
+            <div class="demo-chips" id="chips-support">
+              <button class="demo-chip" data-group="support" data-value="none"     onclick="selectChip(this)">None</button>
+              <button class="demo-chip" data-group="support" data-value="some"     onclick="selectChip(this)">Some</button>
+              <button class="demo-chip" data-group="support" data-value="good"     onclick="selectChip(this)">Good</button>
+              <button class="demo-chip" data-group="support" data-value="strong"   onclick="selectChip(this)">Strong</button>
+            </div>
+          </div>
+
+          <p class="demo-optional-note">Optional · Used only for your risk report · Not stored on any server</p>
         </div>
       </div>
 
@@ -703,6 +920,75 @@
             <div class="live-indicator" id="live-indicator" style="display:none">
               <span class="live-dot"></span> Analyzing…
             </div>
+          </div>
+        </div>
+
+        <!-- Camera OCR & Facial Affect Card -->
+        <div class="glass-card input-card" id="camera-input-card">
+          <div class="input-card-header" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+            <div style="display:flex;align-items:center;gap:12px">
+              <div class="input-card-icon-wrap input-icon-amber">📷</div>
+              <div>
+                <h3 id="cam-card-title">Camera &amp; Affect AI</h3>
+                <p id="cam-mode-desc">Photo your journal notes via OCR or track facial action units</p>
+              </div>
+            </div>
+            <!-- Mode Switcher Tabs -->
+            <div class="cam-mode-toggle" style="display:flex;gap:4px;background:rgba(255,255,255,0.06);padding:3px;border-radius:20px">
+              <button type="button" class="btn btn-ghost cam-tab-btn active" id="cam-tab-ocr" onclick="cameraOCR.setMode('ocr')" style="font-size:0.75rem;padding:4px 10px;border-radius:16px;height:auto">📄 OCR</button>
+              <button type="button" class="btn btn-ghost cam-tab-btn" id="cam-tab-facial" onclick="cameraOCR.setMode('facial')" style="font-size:0.75rem;padding:4px 10px;border-radius:16px;height:auto">🙂 Facial Affect</button>
+            </div>
+          </div>
+
+          <!-- Camera viewfinder area -->
+          <div class="camera-viewfinder" id="camera-viewfinder">
+            <video id="camera-video" class="camera-video" autoplay playsinline muted></video>
+            <canvas id="camera-canvas" class="camera-canvas" style="display:none"></canvas>
+            <img id="camera-preview" class="camera-preview" style="display:none" alt="Captured image preview" />
+            <div class="camera-idle-state" id="camera-idle">
+              <div class="camera-idle-icon">📷</div>
+              <p class="camera-idle-text">Camera off — press <strong>Open Camera</strong> to start</p>
+            </div>
+            <!-- OCR overlay -->
+            <div class="ocr-scanning-overlay" id="ocr-overlay" style="display:none">
+              <div class="ocr-scan-line"></div>
+              <p class="ocr-status-text" id="ocr-status-text">📖 Reading text…</p>
+            </div>
+          </div>
+
+          <!-- Camera controls -->
+          <div class="camera-controls">
+            <button class="btn btn-ghost camera-ctrl-btn" id="camera-open-btn" onclick="cameraOCR.openCamera()" title="Open camera">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              Open Camera
+            </button>
+            <button class="btn btn-primary camera-ctrl-btn" id="camera-snap-btn" onclick="cameraOCR.snap()" style="display:none" title="Snap photo">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/></svg>
+              Snap &amp; Read
+            </button>
+            <button class="btn btn-ghost camera-ctrl-btn" id="camera-stop-btn" onclick="cameraOCR.stop()" style="display:none" title="Stop camera">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+              Stop
+            </button>
+            <button class="btn btn-ghost camera-ctrl-btn" id="camera-retry-btn" onclick="cameraOCR.retry()" style="display:none">
+              🔄 Retake
+            </button>
+            <!-- File upload fallback -->
+            <label class="btn btn-ghost camera-ctrl-btn" id="camera-upload-btn" title="Upload image from gallery">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              Upload Image
+              <input type="file" id="camera-file-input" accept="image/*" style="display:none" onchange="cameraOCR.fromFile(this)" />
+            </label>
+          </div>
+
+          <!-- Extracted text preview -->
+          <div class="ocr-result-box" id="ocr-result-box" style="display:none">
+            <div class="ocr-result-header">
+              <span class="ocr-result-badge">📝 Extracted Text</span>
+              <button class="ocr-use-btn" onclick="cameraOCR.useText()" title="Send to analysis">Use This Text ✓</button>
+            </div>
+            <div class="ocr-result-text" id="ocr-result-text"></div>
+            <p class="ocr-hint">Review the text above, then click <strong>Use This Text</strong> to analyze it.</p>
           </div>
         </div>
 
@@ -742,6 +1028,40 @@
             <canvas id="waveform-canvas" class="waveform-canvas" style="display:none" width="300" height="60"></canvas>
           </div>
         </div>
+      </div><!-- end checkin-grid -->
+
+      <!-- ── AI Reflection Panel ──────────────────────────────────────────── -->
+      <div class="reflection-card glass-card" id="reflection-card">
+        <div class="reflection-card-header" onclick="ReflectionAgent.toggleCard()">
+          <div class="reflection-header-left">
+            <div class="reflection-header-icon">💬</div>
+            <div>
+              <h3 class="reflection-title">AI Reflection</h3>
+              <p class="reflection-subtitle">Guided self-reflection — not therapy, just clarity</p>
+            </div>
+          </div>
+          <div class="reflection-header-right">
+            <span class="reflection-badge">Optional</span>
+            <svg class="reflection-chevron" id="reflection-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+        </div>
+
+        <!-- Collapsed hint -->
+        <div class="reflection-hint-row" id="reflection-hint-row">
+          <p class="reflection-hint-text">✍️ Write your initial feeling above, then start a guided 3-question reflection to deepen your check-in.</p>
+          <button class="btn btn-primary reflection-start-btn" id="reflection-start-btn" onclick="ReflectionAgent.start()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Begin Reflection
+          </button>
+        </div>
+
+        <!-- Conversation area (shown when active) -->
+        <div class="reflection-body" id="reflection-body" style="display:none">
+          <div class="reflection-messages" id="reflection-messages"></div>
+          <button class="reflection-reset-btn" id="reflection-reset-btn" onclick="ReflectionAgent.reset()" style="display:none">
+            ↩ Start over
+          </button>
+        </div>
       </div>
 
       <div class="analyze-section">
@@ -750,7 +1070,7 @@
           <span id="analyze-btn-text">Analyze My Check-in</span>
           <div class="btn-spinner hidden" id="btn-spinner"></div>
         </button>
-        <p class="analyze-hint">🔒 All analysis runs on your device — nothing is sent to any server</p>
+        <p class="analyze-hint">🔒 Analysis runs on your device — your text is not uploaded</p>
       </div>
     </section>
 
@@ -761,10 +1081,15 @@
           <h1 class="page-title">Your Wellbeing Report</h1>
           <p class="page-subtitle" id="report-timestamp">Generated just now</p>
         </div>
-        <button class="btn btn-secondary" onclick="window.print()">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-          Export PDF
-        </button>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-primary" onclick="clinicalSummary.openModal()" style="gap:6px" title="Compile clinical intake &amp; export HL7 FHIR JSON">
+            🩺 Share with Doctor (FHIR)
+          </button>
+          <button class="btn btn-secondary" onclick="window.print()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+            Export PDF
+          </button>
+        </div>
       </div>
 
       <div class="report-grid-top">
@@ -795,12 +1120,12 @@
             <div class="band band-high">High</div>
             <div class="band band-severe">Severe</div>
           </div>
-          <p class="gauge-formula">Score = 40% Emotion AI + 40% NLP Lexicon + 20% Vocal Patterns &nbsp;<span style="font-size:0.68rem;opacity:0.6">(research-inspired heuristic)</span></p>
+          <p class="gauge-formula">Tri-Modal Fusion: <strong>40% Text + 30% Voice + 30% Facial Affect</strong> &nbsp;<span style="font-size:0.68rem;opacity:0.6">(DTU XAI Framework · IC3-2026)</span></p>
         </div>
 
         <!-- Emotion Profile -->
         <div class="glass-card emotion-card" id="emotion-card">
-          <h3 class="card-section-title">🧠 Emotional Profile <span class="badge badge-ai">BERT · Transformers.js</span></h3>
+          <h3 class="card-section-title">🧠 Emotional Profile <span class="badge badge-ai">Emotion model · Transformers.js</span></h3>
           <div class="emotion-profile-content" id="emotion-profile-content">
             <p class="no-data-msg">Emotion AI is loading… or no text was analyzed yet.</p>
           </div>
@@ -819,12 +1144,65 @@
           </div>
         </div>
 
+        <!-- Vocal Biomarkers card -->
         <div class="glass-card report-detail-card" id="vocal-analysis-card">
           <h3 class="card-section-title">🎙️ Vocal Biomarkers <span class="badge badge-exp">Experimental</span></h3>
           <div class="vocal-results" id="vocal-results">
             <p class="no-data-msg">No voice recording. Use the mic in Check-in to enable vocal analysis.</p>
           </div>
         </div>
+
+        <!-- Facial Affect Biomarkers card (Track 1 Tri-Modal) -->
+        <div class="glass-card report-detail-card" id="facial-analysis-card">
+          <h3 class="card-section-title">🙂 Facial Affect Biomarkers <span class="badge badge-exp">Tri-Modal FACS</span></h3>
+          <div class="facial-results" id="facial-results">
+            <p class="no-data-msg">No facial affect captured. Use the camera in Check-in to enable real-time FACS analysis.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SHAP-Style Multi-Modal Contribution Bar ────────────────────────── -->
+      <div class="glass-card shap-card" id="shap-card">
+        <h3 class="card-section-title">
+          🔬 Multi-Modal Risk Attribution
+          <span class="badge" style="background:rgba(192,132,252,0.12);color:#c084fc;border:1px solid rgba(192,132,252,0.3)">XAI — SHAP Inspired</span>
+        </h3>
+        <p class="shap-subtitle">How each signal contributed to your composite risk score</p>
+        <div class="shap-bars" id="shap-bars">
+          <!-- Rendered by renderSHAPCard() in app.js -->
+          <div class="shap-bar-row">
+            <span class="shap-bar-label">✍️ Text / NLP</span>
+            <div class="shap-bar-track"><div class="shap-bar-fill" id="shap-nlp" style="width:0%"></div></div>
+            <span class="shap-bar-pct" id="shap-nlp-pct">—</span>
+          </div>
+          <div class="shap-bar-row">
+            <span class="shap-bar-label">🎙️ Voice</span>
+            <div class="shap-bar-track"><div class="shap-bar-fill shap-fill-voice" id="shap-voice" style="width:0%"></div></div>
+            <span class="shap-bar-pct" id="shap-voice-pct">—</span>
+          </div>
+          <div class="shap-bar-row">
+            <span class="shap-bar-label">🙂 Facial Affect</span>
+            <div class="shap-bar-track"><div class="shap-bar-fill shap-fill-face" id="shap-face" style="width:0%"></div></div>
+            <span class="shap-bar-pct" id="shap-face-pct">—</span>
+          </div>
+          <div class="shap-bar-row">
+            <span class="shap-bar-label">🌿 Lifestyle</span>
+            <div class="shap-bar-track"><div class="shap-bar-fill shap-fill-lifestyle" id="shap-lifestyle" style="width:0%"></div></div>
+            <span class="shap-bar-pct" id="shap-lifestyle-pct">—</span>
+          </div>
+          <div class="shap-bar-row">
+            <span class="shap-bar-label">👥 Demographics</span>
+            <div class="shap-bar-track"><div class="shap-bar-fill shap-fill-demo" id="shap-demo" style="width:0%"></div></div>
+            <span class="shap-bar-pct" id="shap-demo-pct">—</span>
+          </div>
+        </div>
+        <p class="shap-disclaimer">Attribution approximated using research-grade heuristics based on the XAI framework in the paper.</p>
+      </div>
+
+      <!-- ── Demographic Risk Context Card ─────────────────────────────── -->
+      <div class="glass-card demo-report-card" id="demo-report-card" style="display:none">
+        <h3 class="card-section-title">👥 Demographic Risk Context <span class="badge" style="background:rgba(6,214,160,0.12);color:#06d6a0;border:1px solid rgba(6,214,160,0.3)">India Epidemiology</span></h3>
+        <div id="demo-report-content"></div>
       </div>
 
       <!-- Recommendation -->
@@ -846,7 +1224,18 @@
         <button class="btn btn-ghost"     onclick="app.navigate('dashboard')">🏠 Dashboard</button>
       </div>
 
-      <p class="ethics-note">⚠️ This score is generated by an AI model and is <strong>NOT</strong> a clinical diagnosis. Please consult a licensed mental health professional for medical advice.</p>
+      <!-- Clinical Disclaimer Banner -->
+      <div class="clinical-disclaimer-banner">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <div>
+          <strong>Educational Tool — Not a Medical Diagnosis.</strong>
+          This AI-generated score is a <em>research-inspired heuristic</em> and has not been validated in a clinical study.
+          PHQ-9 and GAD-7 scores are <strong>clinically validated screening instruments</strong> — but even they require clinical interpretation.
+          Always consult a licensed psychiatrist or mental health professional if you have concerns.
+          If you are in crisis, call <strong>iCall: 9152987821</strong> (India) immediately.
+          <br/><span style="opacity:0.7;font-size:0.72em;margin-top:4px;display:block">🔒 Your entries stay on your device. Only the AI model files are downloaded from a public CDN.</span>
+        </div>
+      </div>
     </section>
 
     <!-- ══════════════════════ INTERVENTIONS ════════════════════════════════════ -->
@@ -1055,7 +1444,7 @@
       <div class="page-header">
         <div>
           <h1 class="page-title">About MindBridge</h1>
-          <p class="page-subtitle">Web implementation &amp; extension of a research paper submitted for conference review — Explainable AI for early mental health prediction in India · DTU, 2025</p>
+          <p class="page-subtitle">Web implementation &amp; extension of a research paper <strong style="color:#06D6A0">accepted at IC3-2026</strong> — 18th IEEE International Conference on Contemporary Computing · JIIT Noida &amp; University of Florida · Aug 6–8, 2026 🇮🇳</p>
         </div>
       </div>
 
@@ -1064,21 +1453,22 @@
         <div style="display:flex;align-items:flex-start;gap:18px">
           <div style="font-size:2rem;flex-shrink:0">📄</div>
           <div style="flex:1">
-            <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--purple);font-weight:700;margin-bottom:6px">Research Foundation — Submitted for Conference Review</div>
+            <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:#06D6A0;font-weight:700;margin-bottom:6px">✅ Accepted — IC3-2026 · IEEE · Aug 6–8, 2026</div>
             <h3 style="font-size:1rem;font-weight:700;color:var(--text-primary);margin-bottom:6px;line-height:1.4">Explainable AI For Early Prediction of Anxiety and Depression in India: A Dual-Modality Framework</h3>
             <p style="font-size:0.82rem;color:var(--text-secondary);line-height:1.6;margin-bottom:6px">Srimant Bhardwaj &amp; Dr. Navneeta Bharadvaja · Dept. of Biotechnology, Delhi Technological University</p>
+            <p style="font-size:0.78rem;color:var(--text-muted);line-height:1.55;margin-top:4px;margin-bottom:8px">Accepted for <strong style="color:var(--text-secondary)">presentation and publication</strong> at the <strong style="color:var(--text-secondary)">18th IEEE-sponsored International Conference on Contemporary Computing (IC3-2026)</strong>, organized by <em>Jaypee Institute of Information Technology (JIIT), Noida</em> &amp; <em>University of Florida, USA</em> — Hybrid format, Aug 6–8, 2026 ✨</p>
             <p style="font-size:0.82rem;color:var(--text-secondary);line-height:1.6;margin-bottom:10px">The paper proposes a two-phase XAI pipeline: <strong>Phase 1</strong> uses XGBoost + SMOTE on structured lifestyle &amp; socio-demographic data (1,200 records, <strong>79.95% accuracy</strong>). <strong>Phase 2</strong> uses TF-IDF + XGBoost on 53,000+ unstructured text statements (<strong>93.73% accuracy, 96.10% precision</strong>). SHAP provides global feature importance; LIME provides instance-level word attribution. MindBridge is the browser-based implementation and extension of this work.</p>
             <div style="display:flex;flex-wrap:wrap;gap:8px">
               <span style="font-size:0.72rem;background:rgba(139,92,246,0.15);color:var(--purple);padding:3px 10px;border-radius:20px;font-weight:600">XGBoost + SMOTE</span>
               <span style="font-size:0.72rem;background:rgba(16,185,129,0.15);color:var(--emerald);padding:3px 10px;border-radius:20px;font-weight:600">TF-IDF NLP · 93.73%</span>
               <span style="font-size:0.72rem;background:rgba(245,158,11,0.15);color:#f59e0b;padding:3px 10px;border-radius:20px;font-weight:600">SHAP + LIME</span>
               <span style="font-size:0.72rem;background:rgba(99,102,241,0.15);color:#818cf8;padding:3px 10px;border-radius:20px;font-weight:600">India-Specific</span>
-              <span style="font-size:0.72rem;background:rgba(244,63,94,0.12);color:#f43f5e;padding:3px 10px;border-radius:20px;font-weight:600">Under Review · DTU 2025</span>
+              <span style="font-size:0.72rem;background:rgba(6,214,160,0.15);color:#06D6A0;padding:3px 10px;border-radius:20px;font-weight:700">✅ IC3-2026 · IEEE · JIIT &amp; UF</span>
             </div>
           </div>
         </div>
         <div style="margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.06);font-size:0.75rem;color:var(--text-muted)">
-          ⚠️ <strong>Scope boundary:</strong> The underlying research paper is submitted for conference review and not yet published. The trained XGBoost models run server-side on Python. This browser app uses <em>research-inspired heuristics</em> that conceptually approximate the paper's methodology — not the exact trained models. PHQ-9 &amp; GAD-7 remain WHO-validated instruments.
+          ⚠️ <strong>Scope boundary:</strong> The underlying research paper has been <strong>accepted at IC3-2026 (18th IEEE International Conference on Contemporary Computing)</strong>. The trained XGBoost models are not part of this browser app (an optional Python backend exists but is not deployed here). This browser app uses <em>research-inspired heuristics</em> that conceptually approximate the paper's methodology — not the exact trained models. PHQ-9 &amp; GAD-7 remain clinically validated instruments.
         </div>
       </div>
 
@@ -1096,19 +1486,19 @@
         <div class="glass-card about-card">
           <div class="about-icon about-icon-amber">🎙️</div>
           <h3>Vocal Biomarkers <span style="font-size:0.7rem;background:rgba(245,158,11,0.2);color:#f59e0b;padding:2px 7px;border-radius:20px;font-weight:600">Paper Future Work</span></h3>
-          <p>The paper explicitly listed vocal feature integration as future work. MindBridge implements this early: WebAudio API extracts pitch, RMS energy, jitter &amp; shimmer in real-time. This is an <em>experimental browser-side extension</em> of the paper's stated direction.</p>
+          <p>The paper explicitly listed vocal feature integration as future work. MindBridge implements this early: WebAudio API extracts F0, RMS energy, frame-level jitter &amp; shimmer, speech rate and pause ratio in real time. This is an <em>experimental browser-side extension</em> of the paper's stated direction.</p>
         </div>
         <div class="glass-card about-card">
           <div class="about-icon about-icon-rose">🤖</div>
-          <h3>BERT Emotion AI <span style="font-size:0.7rem;background:rgba(244,63,94,0.15);color:#f43f5e;padding:2px 7px;border-radius:20px;font-weight:600">Extended</span></h3>
-          <p>Not in the original paper. MindBridge adds a BERT-based deep learning layer (<em>Xenova/bert-base-uncased-finetuned-emotion</em> via Transformers.js) for multi-class emotion detection — a capability extension beyond the paper's TF-IDF binary classification approach.</p>
+          <h3>Emotion AI <span style="font-size:0.7rem;background:rgba(244,63,94,0.15);color:#f43f5e;padding:2px 7px;border-radius:20px;font-weight:600">Extended</span></h3>
+          <p>Not in the original paper. MindBridge adds a pre-trained transformer layer (DistilRoBERTa via Transformers.js) for multi-class emotion detection — a capability extension beyond the paper's TF-IDF binary classification approach.</p>
         </div>
       </div>
 
       <!-- Pipeline visual -->
       <div class="glass-card pipeline-card">
         <h3 class="card-section-title">🔬 From Paper to Browser: XAI Pipeline</h3>
-        <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:14px">Based on <em>"Explainable AI For Early Prediction of Anxiety &amp; Depression in India"</em> (Bhardwaj &amp; Bharadvaja, DTU 2025 — <strong>submitted for conference review</strong>). Browser heuristics approximate the trained Python/XGBoost pipeline.</div>
+        <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:14px">Based on <em>"Explainable AI For Early Prediction of Anxiety &amp; Depression in India"</em> (Bhardwaj &amp; Bharadvaja, DTU 2025 — <strong style="color:#06D6A0">✅ IC3-2026 · IEEE · JIIT &amp; University of Florida, USA · Aug 6–8, 2026</strong>). Browser heuristics approximate the trained Python/XGBoost pipeline.</div>
         <div class="pipeline-flow">
           <div class="pipeline-step">
             <div class="pip-icon">📝</div>
@@ -1122,7 +1512,7 @@
           <div class="pipeline-arrow">→</div>
           <div class="pipeline-step">
             <div class="pip-icon">🤖</div>
-            <div class="pip-label">BERT Emotion<br><span style="font-size:0.62rem;opacity:0.6">Extended ✦</span></div>
+            <div class="pip-label">Emotion Model<br><span style="font-size:0.62rem;opacity:0.6">Extended ✦</span></div>
           </div>
           <div class="pipeline-arrow">→</div>
           <div class="pipeline-step">
@@ -1164,14 +1554,14 @@
             <div class="phase-badge phase-3" style="background:rgba(245,158,11,0.8)">Future Work</div>
             <div class="phase-body">
               <strong>Vocal Biomarker Integration — <span style="color:#f59e0b">Implemented early in MindBridge</span></strong>
-              <p><em>In paper:</em> Explicitly listed as future work — <em>"incorporating vocal features to better assess the emotions driven for anxiety and depression."</em><br><em>In MindBridge:</em> Real-time WebAudio API extracts pitch, RMS energy, jitter &amp; shimmer in-browser. Experimental early implementation of the paper's stated future direction.</p>
+              <p><em>In paper:</em> Explicitly listed as future work — <em>"incorporating vocal features to better assess the emotions driven for anxiety and depression."</em><br><em>In MindBridge:</em> Real-time WebAudio API extracts F0, RMS energy, frame-level jitter &amp; shimmer, speech rate and pause ratio in-browser. Experimental early implementation of the paper's stated future direction.</p>
             </div>
           </div>
           <div class="phase-item">
             <div class="phase-badge" style="background:linear-gradient(135deg,#06d6a0,#8b5cf6)">Extended</div>
             <div class="phase-body">
               <strong>New Additions Beyond the Paper's Scope</strong>
-              <p>BERT emotion AI (deep learning emotion layer), PHQ-9 + GAD-7 WHO-validated screening, bilingual Hindi-English support, private journal, CBT breathing &amp; grounding exercises, 30-day mood tracker, crisis helplines for India, and a fully offline PWA.</p>
+              <p>transformer emotion AI (deep learning emotion layer), PHQ-9 + GAD-7 clinically validated screening, bilingual Hindi-English support, private journal, CBT breathing &amp; grounding exercises, 30-day mood tracker, crisis helplines for India, and a fully offline PWA.</p>
             </div>
           </div>
         </div>
@@ -1179,7 +1569,7 @@
 
       <div class="glass-card ethics-card">
         <h3>⚠️ Important Disclaimer</h3>
-        <p>MindBridge is an <strong>educational and supportive tool</strong>. The <strong>PHQ-9 and GAD-7 are WHO-validated clinical instruments</strong> — their scores carry scientific meaning. The <strong>composite AI risk score</strong> (combining Emotion AI + NLP + Vocal) is a <em>research-inspired heuristic with custom-weighted parameters</em> and has not been externally validated in a clinical study. It is indicative only and should <strong>never</strong> replace consultation with a licensed psychiatrist or mental health professional. If you are in crisis, please contact a helpline immediately.</p>
+        <p>MindBridge is an <strong>educational and supportive tool</strong>. The <strong>PHQ-9 and GAD-7 are clinically validated clinical instruments</strong> — their scores carry scientific meaning. The <strong>composite AI risk score</strong> (combining text, voice and facial signals) is a <em>research-inspired heuristic with custom-weighted parameters</em> and has not been externally validated in a clinical study. It is indicative only and should <strong>never</strong> replace consultation with a licensed psychiatrist or mental health professional. If you are in crisis, please contact a helpline immediately.</p>
         <button class="btn btn-primary" onclick="app.navigate('interventions')">View Helplines →</button>
       </div>
     </section>
@@ -1189,7 +1579,8 @@
     <div class="page-header">
       <div>
         <h1 class="page-title">📋 PHQ-9 + GAD-7 Clinical Screening</h1>
-        <p class="page-subtitle">WHO-endorsed validated instruments for depression & anxiety · Results stored privately on your device</p>
+        <p class="page-subtitle">validated instruments for depression & anxiety · Results stored privately on your device</p>
+      <a class="who-badge" href="https://www.phqscreeners.com" target="_blank" rel="noopener">🌐 Validated Instrument</a>
       </div>
     </div>
 
@@ -1261,64 +1652,89 @@
     </div>
     <!-- ══════════════════════ JOURNAL ═══════════════════════════════════════════ -->
     <section class="view" id="view-journal">
-    <div class="page-header">
-      <div>
-        <h1 class="page-title">📔 My Private Journal</h1>
-        <p class="page-subtitle">Express freely — research shows 15 min of writing/day reduces depression by 25% · Everything stays on your device</p>
-      </div>
-    </div>
-
-    <div style="display:grid;grid-template-columns:1fr 280px;gap:20px;align-items:start">
-
-      <!-- Write panel -->
-      <div>
-        <!-- Prompt -->
-        <div class="glass-card" style="margin-bottom:16px;padding:16px 20px;border-color:rgba(6,214,160,0.2)">
-          <div style="font-size:0.72rem;color:var(--text-muted);margin-bottom:6px">TODAY'S REFLECTION PROMPT</div>
-          <div id="journal-prompt" style="font-size:0.92rem;color:var(--text-secondary);font-style:italic;line-height:1.6"></div>
-          <button class="btn-text-link" onclick="journal.newPrompt()" style="margin-top:8px;display:block">Refresh prompt ↻</button>
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">📔 My Private Journal</h1>
+          <p class="page-subtitle">Express freely · Expressive writing helps some people process difficult feelings · Everything stays on your device</p>
         </div>
+      </div>
 
-        <div class="glass-card">
-          <!-- Title -->
-          <input type="text" id="journal-title" placeholder="Entry title (optional)" class="journal-title-input" maxlength="80" />
+      <!-- Language picker -->
+      <div class="journal-lang-row">
+        <span class="journal-lang-label">✍️ Write in:</span>
+        <div class="journal-lang-pills">
+          <button class="jlang-btn active" data-lang="en" onclick="journal.setLang('en')">🇬🇧 English</button>
+          <button class="jlang-btn" data-lang="hi" onclick="journal.setLang('hi')">🇮🇳 हिंदी</button>
+          <button class="jlang-btn" data-lang="es" onclick="journal.setLang('es')">🇪🇸 Español</button>
+          <button class="jlang-btn" data-lang="fr" onclick="journal.setLang('fr')">🇫🇷 Français</button>
+          <button class="jlang-btn" data-lang="te" onclick="journal.setLang('te')">🇮🇳 తెలుగు</button>
+          <button class="jlang-btn" data-lang="bn" onclick="journal.setLang('bn')">🇧🇩 বাংলা</button>
+          <button class="jlang-btn" data-lang="mr" onclick="journal.setLang('mr')">🇮🇳 मराठी</button>
+        </div>
+      </div>
 
-          <!-- Mood -->
-          <div style="margin-bottom:14px">
-            <div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.06em">How are you feeling?</div>
-            <div class="journal-mood-picker" id="journal-mood-picker"></div>
+      <!-- Responsive layout grid -->
+      <div class="journal-layout">
+
+        <!-- Write panel -->
+        <div class="journal-write-panel">
+
+          <!-- Prompt card -->
+          <div class="glass-card journal-prompt-card">
+            <div class="journal-prompt-eyebrow" id="journal-prompt-eyebrow">TODAY'S REFLECTION PROMPT</div>
+            <div id="journal-prompt" class="journal-prompt-text"></div>
+            <button class="btn-text-link" onclick="journal.newPrompt()" style="margin-top:8px;display:block">Refresh prompt ↻</button>
           </div>
 
-          <!-- Content -->
-          <textarea id="journal-content" class="journal-textarea" placeholder="Write anything that's on your mind…" rows="10" oninput="journal.onContentChange(this)"></textarea>
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px">
-            <span class="char-count" id="journal-word-count">0 words</span>
-            <button class="btn btn-primary" onclick="journal.saveEntry()">💾 Save Entry</button>
+          <!-- Write card -->
+          <div class="glass-card journal-write-card">
+            <input type="text" id="journal-title" class="journal-title-input" maxlength="80"
+              placeholder="Entry title (optional)" />
+
+            <div class="journal-mood-section">
+              <div class="journal-mood-label" id="journal-mood-label">How are you feeling?</div>
+              <div class="journal-mood-picker" id="journal-mood-picker"></div>
+            </div>
+
+            <textarea id="journal-content" class="journal-textarea" rows="10"
+              placeholder="Write anything that's on your mind…"
+              oninput="journal.onContentChange(this)"></textarea>
+
+            <div class="journal-footer-row" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+              <span class="char-count" id="journal-word-count">0 words</span>
+              <div style="display:flex;gap:8px;flex-wrap:wrap">
+                <button type="button" class="btn btn-ghost" onclick="journal.analyzeDraftDistortions()" style="font-size:0.82rem;gap:4px;border:1px solid rgba(192,132,252,0.3);background:rgba(192,132,252,0.08);color:#c084fc">
+                  🧠 CBT Reframe
+                </button>
+                <button class="btn btn-primary btn-analyze" id="journal-save-btn" onclick="journal.saveEntry()">💾 Save Entry</button>
+              </div>
+            </div>
+            <!-- CBT Results Container for Journal Draft -->
+            <div id="journal-draft-cbt-results" style="display:none;margin-top:14px"></div>
+          </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="journal-sidebar">
+          <div class="glass-card" style="margin-bottom:16px">
+            <h3 class="card-section-title" style="margin-bottom:16px">Mood Overview</h3>
+            <div id="journal-mood-summary"><p class="empty-state" style="font-size:0.8rem;padding:12px 0">Save entries to see mood trends 📊</p></div>
+          </div>
+          <div class="glass-card">
+            <div class="journal-filter-label">Filter by mood</div>
+            <div class="journal-filter-bar" id="journal-filter-bar"></div>
           </div>
         </div>
       </div>
 
-      <!-- Sidebar: mood summary + filter -->
-      <div>
-        <div class="glass-card" style="margin-bottom:16px">
-          <h3 class="card-section-title" style="margin-bottom:16px">Mood Overview</h3>
-          <div id="journal-mood-summary"></div>
+      <!-- Past Entries -->
+      <div class="glass-card journal-entries-card">
+        <div class="card-header-row">
+          <h3 class="card-section-title">📖 Past Entries</h3>
+          <input type="text" placeholder="🔍 Search entries…" class="journal-search-input" oninput="journal.onSearch(this.value)" />
         </div>
-        <div class="glass-card">
-          <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:10px">Filter by mood</div>
-          <div class="journal-filter-bar" id="journal-filter-bar"></div>
-        </div>
+        <div id="journal-entries"></div>
       </div>
-    </div>
-
-    <!-- Past entries -->
-    <div class="glass-card" style="margin-top:20px">
-      <div class="card-header-row">
-        <h3 class="card-section-title">Past Entries</h3>
-        <input type="text" placeholder="🔍 Search entries…" class="journal-search-input" oninput="journal.onSearch(this.value)" />
-      </div>
-      <div id="journal-entries"></div>
-    </div>
     </section>
 
   </main>
@@ -1344,6 +1760,11 @@
         <button class="crisis-modal-close" onclick="crisisModal.close()">✕</button>
       </div>
       <div class="crisis-helplines">
+        <a href="tel:14416" class="crisis-helpline-item">
+          <div class="crisis-helpline-name">Tele-MANAS (Govt. of India)</div>
+          <div class="crisis-helpline-number">14416</div>
+          <div class="crisis-helpline-hours">24/7 Free</div>
+        </a>
         <a href="tel:9152987821" class="crisis-helpline-item">
           <div class="crisis-helpline-name">iCall — TISS</div>
           <div class="crisis-helpline-number">9152987821</div>
@@ -1360,7 +1781,7 @@
           <div class="crisis-helpline-hours">Mon–Sat, 9am–5pm</div>
         </a>
         <a href="tel:044-24640050" class="crisis-helpline-item">
-          <div class="crisis-helpline-name">Snehi (Suicide Prevention)</div>
+          <div class="crisis-helpline-name">Sneha Foundation, Chennai</div>
           <div class="crisis-helpline-number">044-24640050</div>
           <div class="crisis-helpline-hours">24/7</div>
         </a>
@@ -1390,7 +1811,7 @@
             </svg>
           </div>
           <h2 class="ob-title">Welcome to MindBridge 🧠🌿</h2>
-          <p class="ob-body">The interactive web companion to a conference paper: <strong>"Explainable AI For Early Prediction of Anxiety &amp; Depression in India: A Dual-Modality Framework"</strong> — built with WHO-validated PHQ-9/GAD-7 screening, BERT emotion AI, vocal biomarker analysis, and LIME-style explainability.</p>
+          <p class="ob-body">The interactive web companion to a conference paper: <strong>"Explainable AI For Early Prediction of Anxiety &amp; Depression in India: A Dual-Modality Framework"</strong> — built with clinically validated PHQ-9/GAD-7 screening, transformer emotion AI, vocal biomarker analysis, and LIME-style explainability.</p>
           <div class="ob-mission">"Bridging the gap between AI research and accessible mental healthcare in India."</div>
         </div>
 
@@ -1400,9 +1821,9 @@
           <h2 class="ob-title">How MindBridge Works</h2>
           <div class="ob-features">
             <div class="ob-feature"><span>✍️</span><div><strong>Express Yourself</strong><p>Type or speak how you feel — in English or Hindi.</p></div></div>
-            <div class="ob-feature"><span>🧠</span><div><strong>AI Analysis</strong><p>BERT emotion AI + NLP lexicon + vocal biomarkers compute your wellness score.</p></div></div>
-            <div class="ob-feature"><span>📋</span><div><strong>PHQ-9 Screening</strong><p>WHO-validated clinical questionnaire for depression and anxiety.</p></div></div>
-            <div class="ob-feature"><span>📔</span><div><strong>Private Journal</strong><p>Write daily — research shows 15 min/day reduces depression by 25%.</p></div></div>
+            <div class="ob-feature"><span>🧠</span><div><strong>AI Analysis</strong><p>transformer emotion AI + NLP lexicon + vocal biomarkers compute your wellness score.</p></div></div>
+            <div class="ob-feature"><span>📋</span><div><strong>PHQ-9 Screening</strong><p>clinically validated clinical questionnaire for depression and anxiety.</p></div></div>
+            <div class="ob-feature"><span>📔</span><div><strong>Private Journal</strong><p>Write daily — expressive writing may help some people.</p></div></div>
             <div class="ob-feature"><span>👥</span><div><strong>Circle Tracking</strong><p>Share with your circle — monitor your group's collective wellbeing.</p></div></div>
           </div>
         </div>
@@ -1412,7 +1833,7 @@
           <div class="ob-icon">🔒</div>
           <h2 class="ob-title">Your Privacy is Sacred</h2>
           <div class="ob-privacy-points">
-            <div class="ob-privacy-item"><span class="ob-check">✓</span><span>100% on-device — zero data sent to any server</span></div>
+            <div class="ob-privacy-item"><span class="ob-check">✓</span><span>On-device analysis — your entries are not uploaded</span></div>
             <div class="ob-privacy-item"><span class="ob-check">✓</span><span>No account, no login, no tracking, no cookies</span></div>
             <div class="ob-privacy-item"><span class="ob-check">✓</span><span>AI runs inside your browser — not in the cloud</span></div>
             <div class="ob-privacy-item"><span class="ob-check">✓</span><span>All data stays in your browser's localStorage</span></div>
@@ -1440,7 +1861,13 @@
   <script src="assets/lexicon.js"></script>
   <script src="js/nlp.js"></script>
   <script src="js/emotion.js"></script>
+  <script src="js/demographics.js"></script>
   <script src="js/audio.js"></script>
+  <!-- MediaPipe FaceMesh for real-time facial expression and landmark tracking -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js"></script>
+  <script src="js/facial_affect.js"></script>
+  <script src="js/cbt_agent.js"></script>
+  <script src="js/clinical_summary.js"></script>
   <script src="js/explainer.js"></script>
   <script src="js/tracker.js"></script>
   <script src="js/interventions.js"></script>
@@ -1448,7 +1875,51 @@
   <script src="js/journal.js"></script>
   <script src="js/dashboard.js"></script>
   <script src="js/app.js"></script>
+  <!-- Tesseract.js OCR — loaded lazily by camera.js on first use -->
+  <script src="js/camera.js"></script>
+  <!-- AI Reflection conversational agent -->
+  <script src="js/reflection.js"></script>
+  <!-- Monthly Emotional Wrap (Spotify-style) -->
+  <script src="js/wrap.js"></script>
+  <!-- Wellness Streak System + Micro Check-in -->
+  <script src="js/streak.js"></script>
   <script>
+    // ── Demographic chip selector ────────────────────────────────────────────
+    const _demoProfile = Demographics.loadProfile();
+
+    function selectChip(el) {
+      const group = el.dataset.group;
+      // Deselect siblings
+      document.querySelectorAll(`.demo-chip[data-group="${group}"]`)
+        .forEach(c => c.classList.remove('active'));
+      // Toggle this chip
+      const wasActive = el.classList.contains('active');
+      if (!wasActive) {
+        el.classList.add('active');
+        _demoProfile[group] = el.dataset.value;
+      } else {
+        delete _demoProfile[group];
+      }
+      Demographics.saveProfile(_demoProfile);
+    }
+
+    function toggleDemoCard() {
+      const body  = document.getElementById('demo-card-body');
+      const arrow = document.getElementById('demo-toggle-arrow');
+      const open  = body.classList.toggle('open');
+      arrow.textContent = open ? '▲' : '▼';
+    }
+
+    function getDemoProfile() { return { ..._demoProfile }; }
+
+    // Restore saved profile chips on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      Object.entries(_demoProfile).forEach(([group, value]) => {
+        const chip = document.querySelector(`.demo-chip[data-group="${group}"][data-value="${value}"]`);
+        if (chip) chip.classList.add('active');
+      });
+    });
+
     // Crisis modal controller
     const crisisModal = {
       open()  { document.getElementById('crisis-modal-overlay').style.display = 'flex'; document.body.style.overflow = 'hidden'; },
@@ -1456,6 +1927,7 @@
     };
     // Onboarding controller
     const onboarding = {
+
       _slide: 0,
       show() { document.getElementById('onboarding-overlay').style.display = 'flex'; },
       hide() {
@@ -1482,12 +1954,91 @@
     if (!localStorage.getItem('mindbridge_onboarded')) {
       setTimeout(() => onboarding.show(), 800);
     }
+    // ── Lifestyle card toggle ────────────────────────────────────────────────
+    function toggleLifestyleCard() {
+      const body  = document.getElementById('lifestyle-card-body');
+      const arrow = document.getElementById('lifestyle-toggle-arrow');
+      if (!body) return;
+      const open = body.classList.toggle('open');
+      arrow.textContent = open ? '▲' : '▼';
+    }
+
+    // ── Slider live update ───────────────────────────────────────────────────
+    function updateSlider(type, val, suffix) {
+      const badge = document.getElementById(type + '-val-badge');
+      if (badge) badge.textContent = val + suffix;
+      _demoProfile[type] = parseFloat(val);
+      Demographics.saveProfile(_demoProfile);
+    }
+
+    // ── Read all lifestyle values for analysis ───────────────────────────────
+    function getLifestyleProfile() {
+      const sleep  = parseFloat(document.getElementById('sleep-slider')?.value  || 7);
+      const stress = parseFloat(document.getElementById('stress-slider')?.value || 5);
+      return {
+        sleep,
+        stress,
+        activity: _demoProfile['activity'] || null,
+        support:  _demoProfile['support']  || null
+      };
+    }
+
     // Register service worker
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/sw.js').catch(() => {});
     }
   </script>
-  <script src="js/api_client.js"></script>
+  <!-- ── Clinician-Ready 1-Page Summary & HL7 FHIR Modal ── -->
+  <div class="clinical-modal-overlay" id="clinical-summary-modal" style="display:none" onclick="clinicalSummary.closeModal()">
+    <div class="clinical-modal-card glass-card" onclick="event.stopPropagation()">
+      <div class="clinical-modal-topbar">
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="font-size:1.4rem">🩺</span>
+          <div>
+            <h3 style="font-size:1.05rem;font-weight:700;margin:0;color:var(--text-primary)">Clinician-Ready Intake Summary</h3>
+            <span style="font-size:0.75rem;color:var(--text-muted)">FHIR R4-style export (experimental, not clinically validated) · Longitudinal Assessment Record</span>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <button class="btn btn-primary" onclick="clinicalSummary.downloadFhirJson()" style="font-size:0.8rem;padding:7px 12px;gap:6px" title="Export HL7 FHIR Release 4 JSON">
+            📥 Download FHIR JSON
+          </button>
+          <button class="btn btn-secondary" onclick="clinicalSummary.printSummary()" style="font-size:0.8rem;padding:7px 12px;gap:6px" title="Print clean 1-page PDF">
+            🖨️ Print 1-Page PDF
+          </button>
+          <button class="btn btn-ghost" onclick="clinicalSummary.closeModal()" style="font-size:1.1rem;padding:4px 10px;line-height:1" title="Close modal">
+            ✕
+          </button>
+        </div>
+      </div>
+      <div class="clinical-modal-scrollable" id="clinical-summary-content"></div>
+    </div>
+  </div>
+
+  <!-- ── Beautiful AI Analysis Loading Overlay ── -->
+  <div class="mb-loading-overlay" id="mb-loading-overlay">
+    <div class="mb-spinner"></div>
+    <div class="mb-loading-text" id="mb-loading-text">Analyzing your check-in…</div>
+    <div class="mb-loading-steps">
+      <div class="mb-step active" id="mb-step-nlp"><span class="mb-step-dot"></span>NLP Sentiment Analysis</div>
+      <div class="mb-step" id="mb-step-emotion"><span class="mb-step-dot"></span>Emotion AI</div>
+      <div class="mb-step" id="mb-step-vocal"><span class="mb-step-dot"></span>Vocal Biomarkers</div>
+      <div class="mb-step" id="mb-step-composite"><span class="mb-step-dot"></span>Tri-Modal Fusion (Text, Voice, Face)</div>
+    </div>
+  </div>
+<script>
+/* Shows which emotion model is actually active (transparency) */
+(function(){
+  function upd(){
+    var el=document.getElementById('about-model-status');
+    if(!el||typeof EmotionAI==='undefined') return;
+    var id=EmotionAI.getModelId&&EmotionAI.getModelId();
+    if(id) el.textContent='emotion model loaded: '+id;
+    else if(EmotionAI.isLoading&&EmotionAI.isLoading()) el.textContent='emotion model loading…';
+    else el.textContent='no emotion model loaded — using the word-list fallback (reports are labelled NLP-Inferred)';
+  }
+  setInterval(upd,1500); window.addEventListener('load',upd);
+})();
+</script>
 </body>
 </html>
-

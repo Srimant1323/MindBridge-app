@@ -1,0 +1,41 @@
+{
+  "name": "MindBridge — AI Mental Wellness Platform",
+  "short_name": "MindBridge",
+  "description": "Private AI-powered mental wellness platform with emotion detection, PHQ-9 screening, vocal biomarkers & lifestyle tracking.",
+  "id": "/",
+  "scope": "/",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#080910",
+  "theme_color": "#c084fc",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["health", "medical", "lifestyle"],
+  "lang": "en-IN",
+  "dir": "ltr",
+  "shortcuts": [
+    {
+      "name": "New Check-in",
+      "url": "/index.html#checkin",
+      "description": "Start a new mental wellness check-in"
+    },
+    {
+      "name": "PHQ-9 Screening",
+      "url": "/index.html#phq9",
+      "description": "Take the PHQ-9 depression screening"
+    }
+  ]
+}

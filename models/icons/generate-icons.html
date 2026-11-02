@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head><title>MindBridge Icon Generator</title></head>
+<body>
+<p>Open this in Chrome, then right-click each icon and save as the filename shown.</p>
+<canvas id="c192" width="192" height="192"></canvas>
+<canvas id="c512" width="512" height="512"></canvas>
+<script>
+function drawIcon(canvas, size) {
+  const ctx = canvas.getContext('2d');
+  const cx = size/2, cy = size/2, r = size * 0.42;
+  
+  // Dark background
+  const bg = ctx.createRadialGradient(cx, cy, 0, cx, cy, size*0.5);
+  bg.addColorStop(0, '#16172e');
+  bg.addColorStop(1, '#080910');
+  ctx.fillStyle = bg;
+  ctx.beginPath();
+  ctx.arc(cx, cy, size*0.5, 0, Math.PI*2);
+  ctx.fill();
+  
+  // Purple glow halo
+  const halo = ctx.createRadialGradient(cx, cy, r*0.5, cx, cy, r);
+  halo.addColorStop(0, 'rgba(192,132,252,0.3)');
+  halo.addColorStop(1, 'rgba(192,132,252,0)');
+  ctx.fillStyle = halo;
+  ctx.beginPath();
+  ctx.arc(cx, cy, r, 0, Math.PI*2);
+  ctx.fill();
+  
+  // Neural connections
+  const lw = size * 0.028;
+  ctx.lineWidth = lw;
+  ctx.lineCap = 'round';
+  
+  const grad1 = ctx.createLinearGradient(0,0,size,size);
+  grad1.addColorStop(0,'#c084fc'); grad1.addColorStop(1,'#06d6a0');
+  const grad2 = ctx.createLinearGradient(size,0,0,size);
+  grad2.addColorStop(0,'#06d6a0'); grad2.addColorStop(1,'#22d3ee');
+  
+  const arms = [[0,-1,grad1],[0,1,grad2],[-1,0,grad1],[1,0,grad2]];
+  arms.forEach(([dx,dy,g]) => {
+    ctx.strokeStyle = g;
+    ctx.beginPath();
+    ctx.moveTo(cx + dx*size*0.15, cy + dy*size*0.15);
+    ctx.lineTo(cx + dx*size*0.40, cy + dy*size*0.40);
+    ctx.stroke();
+  });
+  
+  // Diagonal synapses
+  [[-1,-1],[-1,1],[1,-1],[1,1]].forEach(([dx,dy]) => {
+    ctx.strokeStyle = 'rgba(192,132,252,0.5)';
+    ctx.lineWidth = lw * 0.7;
+    ctx.beginPath();
+    ctx.moveTo(cx + dx*size*0.12, cy + dy*size*0.12);
+    ctx.lineTo(cx + dx*size*0.33, cy + dy*size*0.33);
+    ctx.stroke();
+  });
+  
+  // Synapse nodes (dots on arm ends)
+  [0,1,2,3].forEach(i => {
+    const angle = i * Math.PI/2 - Math.PI/4;
+    const nx = cx + Math.cos(angle) * size*0.38;
+    const ny = cy + Math.sin(angle) * size*0.38;
+    ctx.beginPath();
+    ctx.arc(nx, ny, size*0.04, 0, Math.PI*2);
+    ctx.fillStyle = i%2===0 ? '#c084fc' : '#06d6a0';
+    ctx.fill();
+  });
+  
+  // Central hub
+  const hub = ctx.createRadialGradient(cx, cy, 0, cx, cy, size*0.12);
+  hub.addColorStop(0,'#e9d5ff');
+  hub.addColorStop(0.4,'#c084fc');
+  hub.addColorStop(1,'#7c3aed');
+  ctx.beginPath();
+  ctx.arc(cx, cy, size*0.12, 0, Math.PI*2);
+  ctx.fillStyle = hub;
+  ctx.fill();
+  
+  // Pulse ring around hub
+  ctx.beginPath();
+  ctx.arc(cx, cy, size*0.18, 0, Math.PI*2);
+  ctx.strokeStyle = 'rgba(192,132,252,0.35)';
+  ctx.lineWidth = lw * 0.6;
+  ctx.stroke();
+}
+drawIcon(document.getElementById('c192'), 192);
+drawIcon(document.getElementById('c512'), 512);
+
+// Auto-download both
+function download(id, filename) {
+  const a = document.createElement('a');
+  a.href = document.getElementById(id).toDataURL('image/png');
+  a.download = filename;
+  a.click();
+}
+setTimeout(() => {
+  download('c192','icon-192.png');
+  setTimeout(() => download('c512','icon-512.png'), 800);
+}, 500);
+</script>
+</body></html>

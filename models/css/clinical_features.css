@@ -1,0 +1,563 @@
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   LIFESTYLE RISK PANEL — Check-in Card
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.lifestyle-card {
+  margin-bottom: 18px;
+  overflow: visible !important;
+  padding: 0;
+  border: 1px solid rgba(6,214,160,0.22);
+  background: linear-gradient(135deg,
+    rgba(6,214,160,0.05) 0%,
+    rgba(34,211,238,0.03) 100%);
+}
+.lifestyle-card:hover { border-color: rgba(6,214,160,0.4); }
+
+.lifestyle-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 22px;
+  cursor: pointer;
+  user-select: none;
+  gap: 12px;
+  transition: background 0.15s;
+  border-radius: var(--radius-lg);
+}
+.lifestyle-card-header:hover { background: rgba(6,214,160,0.04); }
+
+.lifestyle-card-header-left {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.lifestyle-card-icon {
+  font-size: 1.4rem;
+  width: 42px; height: 42px;
+  background: linear-gradient(135deg, rgba(6,214,160,0.18), rgba(34,211,238,0.12));
+  border: 1px solid rgba(6,214,160,0.3);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.lifestyle-card-title { font-size: 1rem; font-weight: 700; color: var(--text-primary); margin: 0 0 3px; }
+.lifestyle-card-sub   { font-size: 0.76rem; color: var(--text-muted); margin: 0; line-height: 1.4; }
+.lifestyle-toggle-arrow { font-size: 0.75rem; color: var(--text-muted); flex-shrink: 0; }
+
+/* Collapsible body */
+.lifestyle-card-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), padding 0.25s;
+  padding: 0 22px;
+}
+.lifestyle-card-body.open {
+  max-height: 700px;
+  overflow: visible;
+  padding: 4px 22px 22px;
+}
+
+/* Lifestyle fields */
+.ls-field { margin-bottom: 18px; }
+.ls-field:last-of-type { margin-bottom: 6px; }
+
+.ls-field-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.ls-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #06d6a0;
+  letter-spacing: 0.04em;
+  display: block;
+  margin-bottom: 10px;
+}
+.ls-field-header .ls-label { margin-bottom: 0; }
+
+.ls-value-badge {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: #06d6a0;
+  background: rgba(6,214,160,0.12);
+  border: 1px solid rgba(6,214,160,0.25);
+  border-radius: 20px;
+  padding: 2px 10px;
+}
+
+/* Range sliders */
+.ls-slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 50px;
+  background: rgba(255,255,255,0.08);
+  outline: none;
+  cursor: pointer;
+  margin-bottom: 6px;
+}
+.ls-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #06d6a0, #22d3ee);
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(6,214,160,0.5);
+  transition: transform 0.15s;
+}
+.ls-slider::-webkit-slider-thumb:hover { transform: scale(1.2); }
+.ls-slider-stress::-webkit-slider-thumb {
+  background: linear-gradient(135deg, #f59e0b, #ef4444);
+  box-shadow: 0 0 10px rgba(245,158,11,0.5);
+}
+
+.ls-slider-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.68rem;
+  color: var(--text-muted);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SHAP-STYLE MULTI-MODAL CONTRIBUTION BAR — Report Card
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.shap-card {
+  margin-bottom: 18px;
+  padding: 22px 24px;
+  border: 1px solid rgba(192,132,252,0.22);
+  background: linear-gradient(135deg,
+    rgba(192,132,252,0.04) 0%,
+    rgba(34,211,238,0.03) 100%);
+}
+
+.shap-subtitle {
+  font-size: 0.80rem;
+  color: var(--text-muted);
+  margin: 0 0 20px;
+  line-height: 1.4;
+}
+
+.shap-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.shap-bar-row {
+  display: grid;
+  grid-template-columns: 130px 1fr 70px;
+  align-items: center;
+  gap: 12px;
+}
+
+.shap-bar-label {
+  font-size: 0.80rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.shap-bar-track {
+  height: 10px;
+  background: rgba(255,255,255,0.07);
+  border-radius: 50px;
+  overflow: hidden;
+}
+
+.shap-bar-fill {
+  height: 100%;
+  border-radius: 50px;
+  width: 0%;
+  transition: width 0.8s cubic-bezier(0.4,0,0.2,1);
+  position: relative;
+}
+
+.shap-bar-fill::after {
+  content: '';
+  position: absolute;
+  right: 0; top: 50%;
+  transform: translateY(-50%);
+  width: 10px; height: 10px;
+  background: inherit;
+  border-radius: 50%;
+  box-shadow: 0 0 8px currentColor;
+}
+
+.shap-fill-voice     { background: linear-gradient(90deg,#c084fc,#f472b6); }
+.shap-fill-face      { background: linear-gradient(90deg,#f43f5e,#fb923c); }
+.shap-fill-lifestyle { background: linear-gradient(90deg,#fbbf24,#f59e0b); }
+.shap-fill-demo      { background: linear-gradient(90deg,#38bdf8,#06d6a0); }
+
+.shap-bar-pct {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--text-secondary);
+  text-align: right;
+}
+
+.shap-disclaimer {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  margin-top: 16px;
+  opacity: 0.7;
+  font-style: italic;
+}
+
+/* ── Camera Mode Tabs ──────────────────────────────────────────────────────── */
+.cam-tab-btn {
+  color: var(--text-muted);
+  transition: all 0.2s ease;
+}
+.cam-tab-btn.active {
+  background: var(--purple, #c084fc) !important;
+  color: #fff !important;
+  font-weight: 700;
+}
+
+/* ── CBT Distortion & Socratic Restructuring Cards ────────────────────────── */
+.cbt-results-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.cbt-summary-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.cbt-privacy-tag {
+  font-size: 0.7rem;
+  color: #06d6a0;
+  font-weight: 600;
+}
+.cbt-distortion-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+.cbt-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.cbt-card-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+.cbt-trigger-tag {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+}
+.cbt-definition {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+.cbt-socratic-block {
+  background: rgba(99, 102, 241, 0.07);
+  border-left: 3px solid #818cf8;
+  padding: 8px 12px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+}
+.cbt-block-title {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin-bottom: 3px;
+}
+.cbt-socratic-q {
+  font-size: 0.8rem;
+  color: #e0e7ff;
+  font-style: italic;
+  margin: 0;
+  line-height: 1.45;
+}
+.cbt-reframe-block {
+  background: rgba(6, 214, 160, 0.07);
+  border-left: 3px solid #06d6a0;
+  padding: 8px 12px;
+  border-radius: 6px;
+}
+.cbt-reframe-p {
+  font-size: 0.8rem;
+  color: #d1fae5;
+  margin: 0;
+  line-height: 1.45;
+}
+.cbt-balanced-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: rgba(6, 214, 160, 0.06);
+  border: 1px solid rgba(6, 214, 160, 0.2);
+  border-radius: 10px;
+}
+.cbt-balanced-icon {
+  font-size: 1.8rem;
+}
+.cbt-balanced-text strong {
+  font-size: 0.9rem;
+  color: #06d6a0;
+  display: block;
+}
+.cbt-balanced-text p {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  margin: 2px 0 0;
+}
+
+/* ── Clinician-Ready 1-Page Summary & HL7 FHIR Modal ──────────────────────── */
+.clinical-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(4, 5, 10, 0.85);
+  backdrop-filter: blur(8px);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.clinical-modal-card {
+  width: 100%;
+  max-width: 900px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  background: #0f101b !important;
+  border: 1px solid rgba(192, 132, 252, 0.25) !important;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+}
+.clinical-modal-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.clinical-modal-scrollable {
+  overflow-y: auto;
+  padding: 24px;
+  background: #ffffff;
+  color: #111827;
+}
+
+/* 1-Page Printable Clinical Document Styling */
+.clinician-page {
+  background: #ffffff;
+  color: #111827;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.clin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+.clin-logo {
+  font-size: 18px;
+  font-weight: 800;
+  color: #4f46e5;
+  display: block;
+}
+.clin-tag {
+  font-size: 11px;
+  color: #6b7280;
+  font-weight: 500;
+}
+.clin-meta {
+  text-align: right;
+  font-size: 11px;
+  color: #374151;
+}
+.clin-divider {
+  height: 2px;
+  background: #4f46e5;
+  margin-bottom: 14px;
+}
+.clin-alert-box {
+  display: flex;
+  gap: 14px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-left: 4px solid #4f46e5;
+  border-radius: 6px;
+  padding: 10px 14px;
+  margin-bottom: 14px;
+}
+.clin-alert-score {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 90px;
+  border-right: 1px solid #e2e8f0;
+  padding-right: 12px;
+}
+.cas-label { font-size: 10px; text-transform: uppercase; color: #64748b; font-weight: 700; }
+.cas-val { font-size: 18px; font-weight: 800; color: #1e293b; }
+.cas-band { font-size: 10px; font-weight: 700; color: #0284c7; }
+.clin-alert-summary { font-size: 11px; color: #334155; line-height: 1.45; }
+.clin-section { margin-bottom: 14px; }
+.clin-sec-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #1e293b;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 4px;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.clin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+}
+.clin-table th {
+  background: #f1f5f9;
+  color: #475569;
+  text-align: left;
+  padding: 6px 8px;
+  border: 1px solid #e2e8f0;
+  font-weight: 600;
+}
+.clin-table td {
+  padding: 6px 8px;
+  border: 1px solid #e2e8f0;
+  color: #334155;
+}
+.clin-badge {
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 10px;
+}
+.clin-badge-minimal, .clin-badge-mild { background: #dcfce7; color: #15803d; }
+.clin-badge-moderate { background: #fef9c3; color: #a16207; }
+.clin-badge-moderatelysevere, .clin-badge-severe { background: #fee2e2; color: #b91c1c; }
+.clin-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.clin-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+.clin-sub-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 10px 12px;
+}
+.clin-sub-card h5 { margin: 0 0 6px; font-size: 11px; font-weight: 700; color: #1e293b; }
+.clin-metric-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  padding: 3px 0;
+  border-bottom: 1px dashed #e2e8f0;
+}
+.clin-stat-box {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 8px;
+  text-align: center;
+}
+.csb-val { display: block; font-size: 15px; font-weight: 800; color: #1e293b; }
+.csb-lbl { font-size: 10px; color: #64748b; }
+.clin-footer {
+  margin-top: 14px;
+  padding-top: 10px;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 20px;
+}
+.clin-disclaimer { font-size: 9px; color: #64748b; max-width: 65%; line-height: 1.4; }
+.clin-signature-block { width: 30%; text-align: center; }
+.clin-sig-line { border-top: 1px solid #1e293b; padding-top: 4px; font-size: 10px; color: #475569; }
+
+/* Print / PDF export styles */
+@media print {
+  .nav-sidebar, .bottom-nav, .page-header button,
+  .report-action-row, #toast, .crisis-modal-overlay,
+  .onboarding-overlay, .help-fab { display: none !important; }
+
+  .view { display: block !important; opacity: 1 !important; }
+  .view:not(#view-report) { display: none !important; }
+
+  body, .app-container { background: #fff !important; color: #111 !important; }
+  .glass-card { background: #fff !important; border: 1px solid #ccc !important; box-shadow: none !important; break-inside: avoid; }
+  .gauge-card svg { filter: none !important; }
+  .shap-bar-track { background: #eee !important; }
+  .shap-bar-fill  { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+
+  /* When printing clinical summary modal specifically */
+  body.printing-clinical #view-report { display: none !important; }
+  body.printing-clinical #clinical-summary-modal {
+    position: static !important;
+    display: block !important;
+    background: transparent !important;
+    padding: 0 !important;
+  }
+  body:not(.printing-clinical) #clinical-summary-modal {
+    display: none !important;
+  }
+  #clinical-summary-modal .clinical-modal-card {
+    box-shadow: none !important;
+    border: none !important;
+    max-width: 100% !important;
+    max-height: none !important;
+    background: transparent !important;
+  }
+  #clinical-summary-modal .clinical-modal-topbar {
+    display: none !important;
+  }
+  #clinical-summary-modal .clinical-modal-scrollable {
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+  .clinician-page {
+    page-break-inside: avoid;
+    page-break-after: avoid;
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .shap-bar-row { grid-template-columns: 100px 1fr 55px; gap: 8px; }
+  .shap-bar-label { font-size: 0.72rem; }
+  .lifestyle-card-body.open { padding: 4px 14px 16px; }
+  .clin-grid-2, .clin-grid-3 { grid-template-columns: 1fr; }
+  .clin-footer { flex-direction: column; align-items: stretch; }
+  .clin-disclaimer { max-width: 100%; margin-bottom: 10px; }
+  .clin-signature-block { width: 100%; }
+}

@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#16172e"/>
+      <stop offset="100%" stop-color="#080910"/>
+    </radialGradient>
+    <linearGradient id="gP" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#c084fc"/>
+      <stop offset="100%" stop-color="#06d6a0"/>
+    </linearGradient>
+    <linearGradient id="gO" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#06d6a0"/>
+      <stop offset="100%" stop-color="#22d3ee"/>
+    </linearGradient>
+    <radialGradient id="hub" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#e9d5ff"/>
+      <stop offset="40%" stop-color="#c084fc"/>
+      <stop offset="100%" stop-color="#7c3aed"/>
+    </radialGradient>
+  </defs>
+  <circle cx="96" cy="96" r="96" fill="url(#bg)"/>
+  <circle cx="96" cy="96" r="70" fill="rgba(192,132,252,0.08)"/>
+  <line x1="96" y1="67" x2="96" y2="22" stroke="url(#gP)" stroke-width="6" stroke-linecap="round"/>
+  <line x1="96" y1="125" x2="96" y2="170" stroke="url(#gO)" stroke-width="6" stroke-linecap="round"/>
+  <line x1="67" y1="96" x2="22" y2="96" stroke="url(#gP)" stroke-width="6" stroke-linecap="round"/>
+  <line x1="125" y1="96" x2="170" y2="96" stroke="url(#gO)" stroke-width="6" stroke-linecap="round"/>
+  <line x1="73" y1="73" x2="36" y2="36" stroke="#c084fc" stroke-width="4" stroke-linecap="round" opacity="0.5"/>
+  <line x1="119" y1="119" x2="156" y2="156" stroke="#06d6a0" stroke-width="4" stroke-linecap="round" opacity="0.5"/>
+  <line x1="73" y1="119" x2="36" y2="156" stroke="#c084fc" stroke-width="4" stroke-linecap="round" opacity="0.4"/>
+  <line x1="119" y1="73" x2="156" y2="36" stroke="#06d6a0" stroke-width="4" stroke-linecap="round" opacity="0.4"/>
+  <circle cx="96" cy="22" r="7" fill="#c084fc"/>
+  <circle cx="96" cy="170" r="7" fill="#06d6a0"/>
+  <circle cx="22" cy="96" r="7" fill="#c084fc"/>
+  <circle cx="170" cy="96" r="7" fill="#06d6a0"/>
+  <circle cx="96" cy="96" r="22" fill="url(#hub)"/>
+  <circle cx="96" cy="96" r="32" fill="none" stroke="rgba(192,132,252,0.35)" stroke-width="3"/>
+</svg>
