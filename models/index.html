@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MindBridge — AI Mental Wellness Platform</title>
+  <meta name="description" content="MindBridge: AI-powered mental wellness with emotion detection, PHQ-9 screening, vocal biomarkers &amp; private journaling. 100% on-device. Free." />
+  <meta name="keywords" content="mental health, AI wellness, PHQ-9, depression screening, emotion AI, journaling, mindfulness" />
+  <meta name="theme-color" content="#c084fc" />
+  <meta name="author" content="MindBridge Research" />
+  <meta name="robots" content="index, follow" />
+
+  <!-- Open Graph -->
+  <meta property="og:type"        content="website" />
+  <meta property="og:title"       content="MindBridge — AI Mental Wellness Platform" />
+  <meta property="og:description" content="Private AI mental wellness. PHQ-9 + emotion AI + vocal biomarkers. Everything stays on your device." />
+  <meta property="og:url"         content="https://mindbridge.app" />
+  <meta property="og:image"       content="icons/icon.svg" />
+  <meta property="og:site_name"   content="MindBridge" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card"        content="summary" />
+  <meta name="twitter:title"       content="MindBridge — AI Mental Wellness" />
+  <meta name="twitter:description" content="Private, on-device AI mental wellness platform. No uploads, no tracking." />
+  <meta name="twitter:image"       content="icons/icon.svg" />
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="MindBridge" />
+  <meta name="application-name" content="MindBridge" />
+
+  <!-- Fonts: Nunito (UI) + Inter (data/numbers) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800;900&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <!-- Premium Visual Upgrade -->
+  <link rel="stylesheet" href="css/premium_ui.css" />
+  <link rel="stylesheet" href="css/clinical_features.css" />
+</head>
+<body>
+
+  <!-- ═══ Sidebar ════════════════════════════════════════════════════════════ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-top">
+      <div class="sidebar-logo" onclick="app.navigate('dashboard')">
+        <div class="logo-mark">
+          <!-- MindBridge DNA×Neural Logo — Bioinformatics Edition -->
+          <svg width="30" height="30" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="lgP" x1="0" y1="0" x2="44" y2="44" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#c084fc"/>
+                <stop offset="100%" stop-color="#06d6a0"/>
+              </linearGradient>
+              <linearGradient id="lgO" x1="44" y1="0" x2="0" y2="44" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#06d6a0"/>
+                <stop offset="100%" stop-color="#22d3ee"/>
+              </linearGradient>
+            </defs>
+            <!-- Central neural hub -->
+            <circle cx="22" cy="22" r="6" fill="url(#lgP)" opacity="0.95"/>
+            <!-- Neural connections (axons) -->
+            <line x1="22" y1="16" x2="22" y2="4"  stroke="url(#lgP)" stroke-width="2" stroke-linecap="round"/>
+            <line x1="22" y1="28" x2="22" y2="40" stroke="url(#lgO)" stroke-width="2" stroke-linecap="round"/>
+            <line x1="16" y1="22" x2="4"  y2="22" stroke="url(#lgP)" stroke-width="2" stroke-linecap="round"/>
+            <line x1="28" y1="22" x2="40" y2="22" stroke="url(#lgO)" stroke-width="2" stroke-linecap="round"/>
+            <!-- Diagonal synapses -->
+            <line x1="17" y1="17" x2="8"  y2="8"  stroke="url(#lgP)" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+            <line x1="27" y1="27" x2="36" y2="36" stroke="url(#lgO)" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+            <line x1="27" y1="17" x2="36" y2="8"  stroke="url(#lgO)" stroke-width="1.5" stroke-linecap="round" opacity="0.55"/>
+            <line x1="17" y1="27" x2="8"  y2="36" stroke="url(#lgP)" stroke-width="1.5" stroke-linecap="round" opacity="0.55"/>
+            <!-- Synaptic nodes -->
+            <circle cx="22" cy="4"  r="2.5" fill="#c084fc"/>
+            <circle cx="22" cy="40" r="2.5" fill="#06d6a0"/>
+            <circle cx="4"  cy="22" r="2.5" fill="#c084fc" opacity="0.8"/>
+            <circle cx="40" cy="22" r="2.5" fill="#06d6a0" opacity="0.8"/>
+            <circle cx="8"  cy="8"  r="1.8" fill="#c084fc" opacity="0.6"/>
+            <circle cx="36" cy="36" r="1.8" fill="#06d6a0" opacity="0.6"/>
+            <circle cx="36" cy="8"  r="1.8" fill="#22d3ee" opacity="0.6"/>
+            <circle cx="8"  cy="36" r="1.8" fill="#22d3ee" opacity="0.6"/>
+          </svg>
+        </div>
+        <span class="logo-text">MindBridge</span>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">MAIN</div>
+        <button class="sidebar-link active" data-view="dashboard" id="nav-dashboard" onclick="app.navigate('dashboard')">
+          <span class="nav-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          </span>
+          <span class="nav-label">Dashboard</span>
+          <span class="nav-badge" id="nav-sessions-badge"></span>
+        </button>
+        <button class="sidebar-link" data-view="checkin" id="nav-checkin" onclick="app.navigate('checkin')">
+          <span class="nav-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/><path d="M12 6v6l4 2"/></svg>
+          </span>
+          <span class="nav-label">New Check-in</span>
+          <span class="nav-dot-new"></span>
+        </button>
+        <button class="sidebar-link" data-view="report" id="nav-report" onclick="app.navigate('report')">
+          <span class="nav-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          </span>
+          <span class="nav-label">Latest Report</span>
+        </button>
+
+        <div class="nav-section-label" style="margin-top:8px">TOOLS</div>
+        <button class="sidebar-link" data-view="interventions" id="nav-interventions" onclick="app.navigate('interventions')">
+          <span class="nav-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </span>
+          <span class="nav-label">Support Tools</span>
+        </button>
+        <button class="sidebar-link" data-view="tracker" id="nav-tracker" onclick="app.navigate('tracker')">
+          <span class="nav-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </span>
+          <span class="nav-label">Lifestyle Tracker</span>
+        </button>
+
+        <div class="nav-section-label" style="margin-top:8px">CLINICAL</div>
+        <button class="sidebar-link" data-view="phq9" id="nav-phq9" onclick="app.navigate('phq9')">
+          <span class="nav-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg>
+          </span>
+          <span class="nav-label">PHQ-9 Screening</span>
+          <span class="nav-badge-new">Clinical</span>
+        </button>
+        <button class="sidebar-link" data-view="journal" id="nav-journal" onclick="app.navigate('journal')">
+          <span class="nav-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          </span>
+          <span class="nav-label">My Journal</span>
+        </button>
+
+        <div class="nav-section-label" style="margin-top:8px">INFO</div>
+        <button class="sidebar-link" data-view="about" id="nav-about" onclick="app.navigate('about')">
+          <span class="nav-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </span>
+          <span class="nav-label">About</span>
+        </button>
+      </nav>
+    </div>
+
+    <div class="sidebar-bottom">
+      <!-- Privacy trust badge -->
+      <div class="sb-privacy-badge">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span>100% On-Device · Zero Uploads</span>
+      </div>
+
+      <div class="ai-status-pill" id="ai-status-badge" data-status="loading">
+        <span class="status-dot" id="ai-status-dot"></span>
+        <span id="ai-status-label">AI Loading…</span>
+      </div>
+
+      <div class="sidebar-user">
+        <div class="user-avatar">🧠</div>
+        <div class="user-info">
+          <span class="user-name">Anonymous User</span>
+          <span class="user-sub">Private Research Tool</span>
+        </div>
+      </div>
+
+      <!-- Export + Version row -->
+      <div class="sb-footer-row">
+        <button class="sb-export-btn" onclick="app.exportData()" title="Download all your data as JSON">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Export Data
+        </button>
+        <span class="sb-version">v2.3</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Mobile topbar -->
+  <header class="mobile-header" id="mobile-header">
+    <div class="mobile-logo" onclick="app.navigate('dashboard')">
+      <div class="logo-mark-sm">🧠</div>
+      <span>MindBridge</span>
+    </div>
+    <button class="hamburger" id="hamburger" onclick="app.toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <!-- Mobile overlay -->
+  <div class="nav-overlay" id="nav-overlay" onclick="app.closeMenu()"></div>
+
+  <!-- ═══ Main Content ════════════════════════════════════════════════════════ -->
+  <main class="main-content" id="main-content">
+
+    <!-- ══════════════════════ DASHBOARD — LANDING PAGE ══════════════════════════ -->
+    <section class="view active" id="view-dashboard">
+
+      <!-- ─── HERO SECTION ─────────────────────────────────────── (Deep Black → Purple) -->
+      <div class="landing-hero">
+        <div class="hero-glow hero-glow-purple"></div>
+        <div class="hero-glow hero-glow-ocean"></div>
+        <div class="hero-eyebrow">
+          <span class="eyebrow-badge">🧬 AI × Mental Health × Bioinformatics</span>
+        </div>
+        <h1 class="hero-title">
+          Bridging the Gap Between
+          <span class="hero-gradient-text">Artificial Intelligence</span>
+          and Mental Wellness
+        </h1>
+        <p class="hero-subtitle">
+          MindBridge is a multi-modal, on-device mental health analysis platform combining
+          <strong>transformer-based NLP</strong>, <strong>vocal biomarker processing</strong>,
+          and <strong>validated clinical instruments</strong> (PHQ-9 / GAD-7) into a single,
+          privacy-first wellness intelligence engine.
+        </p>
+        <div class="hero-cta-row">
+          <button class="btn btn-primary btn-hero" onclick="app.navigate('checkin')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Start Wellness Check-in
+          </button>
+          <button class="btn btn-ghost btn-hero-ghost" onclick="app.navigate('phq9')">
+            📋 PHQ-9 Clinical Screen
+          </button>
+        </div>
+        <div class="hero-trust-row">
+          <span class="trust-chip">🔒 100% On-Device</span>
+          <span class="trust-chip">🧠 Transformer Emotion Model</span>
+          <span class="trust-chip">🏥 Validated Questionnaires (PHQ-9 / GAD-7)</span>
+          <span class="trust-chip">📊 Multi-modal Fusion</span>
+        </div>
+      </div>
+
+      <!-- ─── LIVE STATS BAR ─────────────────────────────────── (Purple Tinted) -->
+      <!-- Dashboard Greeting -->
+      <div class="dashboard-greeting-row">
+        <span id="dashboard-greeting" class="dash-greeting">Good day 👋</span>
+        <span id="dashboard-date" class="dash-date"></span>
+      </div>
+      <div class="landing-stats-bar">
+        <div class="lsb-inner">
+          <div class="lsb-item">
+            <div class="lsb-val" id="stat-total-val">0</div>
+            <div class="lsb-label">Check-ins Logged</div>
+          </div>
+          <div class="lsb-divider"></div>
+          <div class="lsb-item">
+            <div class="lsb-val" id="stat-streak-val">0</div>
+            <div class="lsb-label">Day Streak 🔥</div>
+          </div>
+          <div class="lsb-divider"></div>
+          <div class="lsb-item">
+            <div class="lsb-val" id="stat-risk-val">—</div>
+            <div class="lsb-label">Avg Risk Score</div>
+          </div>
+          <div class="lsb-divider"></div>
+          <div class="lsb-item">
+            <div class="lsb-val" id="stat-reports-val">0</div>
+            <div class="lsb-label">Reports Generated</div>
+          </div>
+          <div class="lsb-divider"></div>
+          <div class="lsb-item">
+            <div class="lsb-val" id="community-people-count">0</div>
+            <div class="lsb-label">Circle Members</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── ABOUT SECTION ──────────────────────────────────── (Ocean Green tinted) -->
+      <div class="landing-section ls-ocean">
+        <div class="ls-label-row">
+          <span class="ls-section-num">01</span>
+          <span class="ls-section-dash">—</span>
+          <span class="ls-section-title">ABOUT MINDBRIDGE</span>
+        </div>
+        <div class="about-grid-layout">
+          <div class="about-text-col">
+            <h2 class="section-heading section-heading-ocean">What is MindBridge?</h2>
+            <p class="section-body">
+              MindBridge is a <strong>browser-based, zero-server mental wellness intelligence platform</strong>
+              designed to detect, quantify, and track psychological distress using multi-modal AI inference.
+              Built on peer-reviewed research in affective computing, clinical psychology, and signal
+              processing, it democratizes access to mental health screening tools previously available
+              only in clinical settings.
+            </p>
+            <p class="section-body">
+              Designed for <strong>individuals, wellness circles, college counselors, and researchers</strong>,
+              MindBridge processes text and vocal inputs entirely on-device — your entries are not uploaded anywhere.
+              Your text and voice are analysed on your device; the AI model files are downloaded once from a public CDN.
+            </p>
+            <div class="about-highlights">
+              <div class="about-highlight-item">
+                <span class="ah-icon" style="color:var(--ocean)">🎓</span>
+                <div><strong>Research-Backed</strong><br/><small>PHQ-9, GAD-7, transformer emotion models, prosodic biomarkers</small></div>
+              </div>
+              <div class="about-highlight-item">
+                <span class="ah-icon" style="color:var(--purple)">🔬</span>
+                <div><strong>Multi-modal Fusion</strong><br/><small>Text + Voice + Face (+ PHQ-9 / GAD-7 results shown alongside) fused into one composite score</small></div>
+              </div>
+              <div class="about-highlight-item">
+                <span class="ah-icon" style="color:var(--amber)">🌐</span>
+                <div><strong>Bilingual NLP</strong><br/><small>Hindi-English clinical lexicon with 100+ sentiment-weighted terms</small></div>
+              </div>
+            </div>
+          </div>
+          <div class="about-stat-col">
+            <div class="about-stat-card" style="border-color:rgba(6,214,160,0.4);background:rgba(6,214,160,0.05)">
+              <div class="asc-num" style="color:var(--ocean)">AI</div>
+              <div class="asc-label">Transformer Model</div>
+              <div class="asc-desc">DistilRoBERTa emotion classifier (j-hartmann model, ONNX export) via Transformers.js. The exact model that loaded is shown on every report; if it cannot load, the report says NLP-Inferred.</div>
+            </div>
+            <div class="about-stat-card" style="border-color:rgba(192,132,252,0.4);background:rgba(192,132,252,0.05)">
+              <div class="asc-num" style="color:var(--purple)">PHQ-9</div>
+              <div class="asc-label">+ GAD-7 Validated Scales</div>
+              <div class="asc-desc">Kroenke et al. 2002 · Spitzer et al. 2006 — widely used standard instruments</div>
+            </div>
+            <div class="about-stat-card" style="border-color:rgba(251,191,36,0.4);background:rgba(251,191,36,0.05)">
+              <div class="asc-num" style="color:var(--amber)">100+</div>
+              <div class="asc-label">Bilingual Lexicon Entries</div>
+              <div class="asc-desc">Clinical Hindi-English NLP dictionary for sentiment, risk, and protective factor detection</div>
+            </div>
+            <div class="about-stat-card" style="border-color:rgba(244,113,181,0.4);background:rgba(244,113,181,0.05)">
+              <div class="asc-num" style="color:var(--rose)">0</div>
+              <div class="asc-label">Text or Audio Uploads</div>
+              <div class="asc-desc">All inference runs in-browser — WebAudio API, localStorage, Canvas 2D, zero cloud dependency</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── PIPELINE SECTION ───────────────────────────────── (Purple Tinted) -->
+      <div class="landing-section ls-purple">
+        <div class="ls-label-row">
+          <span class="ls-section-num">02</span>
+          <span class="ls-section-dash">—</span>
+          <span class="ls-section-title">CLINICAL PIPELINE</span>
+        </div>
+        <h2 class="section-heading section-heading-purple">How MindBridge Processes Your Data</h2>
+        <p class="section-body" style="max-width:700px;margin:0 auto 40px;text-align:center">
+          A 5-stage multi-modal inference pipeline converts raw user input into a
+          clinically-informed composite risk score — entirely on-device.
+        </p>
+        <div class="pipeline-cards">
+
+          <div class="pipe-card pipe-card-ocean">
+            <div class="pipe-step-num">01</div>
+            <div class="pipe-icon">📝</div>
+            <h4 class="pipe-title">Data Acquisition</h4>
+            <p class="pipe-desc">Text input (free-form journal, Hindi/English) and/or vocal audio via WebAudio API MediaRecorder. Optional PHQ-9 / GAD-7 structured questionnaire responses.</p>
+            <div class="pipe-tags"><span>WebAudio API</span><span>MediaRecorder</span><span>PHQ-9</span></div>
+          </div>
+
+          <div class="pipe-arrow">→</div>
+
+          <div class="pipe-card pipe-card-purple">
+            <div class="pipe-step-num">02</div>
+            <div class="pipe-icon">🔤</div>
+            <h4 class="pipe-title">NLP Text Analysis</h4>
+            <p class="pipe-desc">Lexicon and phrase-pattern matching (with negation handling) on a bilingual Hindi-English clinical dictionary. Computes length-normalised risk scores, identifies trigger and protective language patterns. Score normalized to 0–100.</p>
+            <div class="pipe-tags"><span>Lexicon NLP</span><span>Negation</span><span>Risk Scoring</span></div>
+          </div>
+
+          <div class="pipe-arrow">→</div>
+
+          <div class="pipe-card pipe-card-amber">
+            <div class="pipe-step-num">03</div>
+            <div class="pipe-icon">🧠</div>
+            <h4 class="pipe-title">Emotion AI Inference</h4>
+            <p class="pipe-desc">A DistilRoBERTa transformer (Transformers.js, ONNX runtime) classifies text into emotions (Sadness, Joy, Anger, Fear, Surprise; Love when the model supports it). Falls back to NLP-inferred profile if model loading.</p>
+            <div class="pipe-tags"><span>DistilRoBERTa</span><span>ONNX</span><span>6-class</span></div>
+          </div>
+
+          <div class="pipe-arrow">→</div>
+
+          <div class="pipe-card pipe-card-rose">
+            <div class="pipe-step-num">04</div>
+            <div class="pipe-icon">🎙️</div>
+            <h4 class="pipe-title">Vocal Biomarker Analysis</h4>
+            <p class="pipe-desc">Prosodic feature extraction from raw microphone audio: fundamental frequency (F0, autocorrelation), frame-level jitter and shimmer, speech rate, energy and pause ratio. Experimental: measured with a browser microphone, so values are not comparable to lab (Praat) measurements and are not clinically validated.</p>
+            <div class="pipe-tags"><span>F0/Jitter</span><span>Shimmer</span><span>Prosody</span></div>
+          </div>
+
+          <div class="pipe-arrow">→</div>
+
+          <div class="pipe-card pipe-card-ocean" style="border-color:rgba(6,214,160,0.6);box-shadow:0 0 30px rgba(6,214,160,0.15)">
+            <div class="pipe-step-num">05</div>
+            <div class="pipe-icon">📊</div>
+            <h4 class="pipe-title">Composite Score Fusion</h4>
+            <p class="pipe-desc">Weighted fusion: <code>Score = 0.4×Text + 0.3×Voice + 0.3×Face</code>, where Text = 0.5×NLP lexicon + 0.5×Emotion model (weights are hand-chosen, not fitted to data). Maps to 4-level clinical risk: Low / Moderate / High / Severe with actionable recommendations and helpline escalation.</p>
+            <div class="pipe-tags"><span>Weighted Fusion</span><span>Risk Bands</span><span>Escalation</span></div>
+          </div>
+
+        </div>
+
+        <!-- LIME Explainability note -->
+        <div class="pipeline-note">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span>Explainability is implemented via a <strong>LIME-style word saliency map</strong> — each word's contribution to the risk score is highlighted in the report view, enabling transparent, interpretable AI decisions.</span>
+        </div>
+      </div>
+
+      <!-- ─── FEATURES SECTION ───────────────────────────────── (Amber Tinted) -->
+      <div class="landing-section ls-amber">
+        <div class="ls-label-row">
+          <span class="ls-section-num">03</span>
+          <span class="ls-section-dash">—</span>
+          <span class="ls-section-title">IMPLEMENTED FEATURES</span>
+        </div>
+        <h2 class="section-heading section-heading-amber">What's Built Inside MindBridge</h2>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="fc-icon" style="background:rgba(6,214,160,0.12);color:var(--ocean);border-color:rgba(6,214,160,0.3)">🧠</div>
+            <h4>Transformer Emotion AI</h4>
+            <p>DistilRoBERTa model loaded via Transformers.js (ONNX). Real-time 6-class emotion classification with confidence scores. NLP fallback for offline/loading states.</p>
+            <div class="fc-status fc-status-live">● Live</div>
+          </div>
+          <div class="feature-card">
+            <div class="fc-icon" style="background:rgba(192,132,252,0.12);color:var(--purple);border-color:rgba(192,132,252,0.3)">📋</div>
+            <h4>PHQ-9 + GAD-7 Screening</h4>
+            <p>Full 16-question depression and anxiety screening. Crisis detection on Question 9 with immediate helpline escalation. Scores saved to history with trend tracking.</p>
+            <div class="fc-status fc-status-live">● Live</div>
+          </div>
+          <div class="feature-card">
+            <div class="fc-icon" style="background:rgba(251,191,36,0.12);color:var(--amber);border-color:rgba(251,191,36,0.3)">🎙️</div>
+            <h4>Vocal Biomarker Engine</h4>
+            <p>WebAudio API pipeline: PCM capture → F0 (autocorrelation) → jitter/shimmer → speech rate → pause ratio. Experimental prosodic biomarkers correlated with depressive states.</p>
+            <div class="fc-status fc-status-exp">⚗ Experimental</div>
+          </div>
+          <div class="feature-card">
+            <div class="fc-icon" style="background:rgba(244,113,181,0.12);color:var(--rose);border-color:rgba(244,113,181,0.3)">📔</div>
+            <h4>Private Expressive Journal</h4>
+            <p>Free-text journaling with mood tagging (8 moods), daily reflection prompts, full-text search, date grouping, and mood distribution analytics. Backed by Pennebaker (2004) therapeutic writing research.</p>
+            <div class="fc-status fc-status-live">● Live</div>
+          </div>
+          <div class="feature-card">
+            <div class="fc-icon" style="background:rgba(34,211,238,0.12);color:var(--cyan);border-color:rgba(34,211,238,0.3)">👥</div>
+            <h4>Circle Community Tracking</h4>
+            <p>Multi-respondent check-in system. Named entries grouped per person in a community log with risk trends, average scores, session history, and CSV export for group analysis.</p>
+            <div class="fc-status fc-status-live">● Live</div>
+          </div>
+          <div class="feature-card">
+            <div class="fc-icon" style="background:rgba(6,214,160,0.12);color:var(--ocean);border-color:rgba(6,214,160,0.3)">🌐</div>
+            <h4>Bilingual NLP Lexicon</h4>
+            <p>100+ entry clinical Hindi-English dictionary with term-specific risk weights. Covers emotions, somatic symptoms, protective factors, and crisis language. Length-normalised scoring.</p>
+            <div class="fc-status fc-status-live">● Live</div>
+          </div>
+          <div class="feature-card">
+            <div class="fc-icon" style="background:rgba(192,132,252,0.12);color:var(--purple);border-color:rgba(192,132,252,0.3)">🆘</div>
+            <h4>Crisis Detection &amp; Escalation</h4>
+            <p>Real-time monitoring for PHQ-9 Q9 (self-harm ideation), model-detected fear/extreme-sadness, and NLP crisis terms. Instant escalation to verified Indian helplines with direct tel: links.</p>
+            <div class="fc-status fc-status-live">● Live</div>
+          </div>
+          <div class="feature-card">
+            <div class="fc-icon" style="background:rgba(251,191,36,0.12);color:var(--amber);border-color:rgba(251,191,36,0.3)">📱</div>
+            <h4>Progressive Web App (PWA)</h4>
+            <p>Service Worker + Web App Manifest. Installable on Android/iOS home screen. Full offline support after initial load. Caches static assets for zero-latency repeat visits.</p>
+            <div class="fc-status fc-status-live">● Live</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── TECH STACK SECTION ─────────────────────────────── (Deep Black → Rose) -->
+      <div class="landing-section ls-dark">
+        <div class="ls-label-row">
+          <span class="ls-section-num">04</span>
+          <span class="ls-section-dash">—</span>
+          <span class="ls-section-title">TECHNICAL IMPLEMENTATION</span>
+        </div>
+        <h2 class="section-heading section-heading-rose">Technology Stack</h2>
+        <p class="section-body" style="max-width:640px;margin:0 auto 36px;text-align:center">
+          Built entirely on open web standards — no backend, no cloud, no dependencies other than Transformers.js and the browser's own APIs.
+        </p>
+        <div class="tech-grid">
+          <div class="tech-item">
+            <div class="tech-icon">🤗</div>
+            <div class="tech-name">Transformers.js</div>
+            <div class="tech-cat">NLP / AI</div>
+            <div class="tech-desc">ONNX runtime for emotion-model inference in-browser</div>
+          </div>
+          <div class="tech-item">
+            <div class="tech-icon">🎵</div>
+            <div class="tech-name">WebAudio API</div>
+            <div class="tech-cat">Signal Processing</div>
+            <div class="tech-desc">PCM audio capture, pitch analysis, prosodic features</div>
+          </div>
+          <div class="tech-item">
+            <div class="tech-icon">📦</div>
+            <div class="tech-name">localStorage</div>
+            <div class="tech-cat">Data Persistence</div>
+            <div class="tech-desc">All sessions, journals, screenings stored on-device only</div>
+          </div>
+          <div class="tech-item">
+            <div class="tech-icon">🖼️</div>
+            <div class="tech-name">Canvas 2D API</div>
+            <div class="tech-cat">Data Visualization</div>
+            <div class="tech-desc">Donut charts, sparklines, heatmaps, audio waveforms</div>
+          </div>
+          <div class="tech-item">
+            <div class="tech-icon">⚙️</div>
+            <div class="tech-name">Service Worker</div>
+            <div class="tech-cat">PWA / Offline</div>
+            <div class="tech-desc">Asset caching, offline-first architecture, installability</div>
+          </div>
+          <div class="tech-item">
+            <div class="tech-icon">🧬</div>
+            <div class="tech-name">Emotion Transformer</div>
+            <div class="tech-cat">Transformer Model</div>
+            <div class="tech-desc">DistilRoBERTa emotion classifier (j-hartmann)</div>
+          </div>
+          <div class="tech-item">
+            <div class="tech-icon">📊</div>
+            <div class="tech-name">PHQ-9 / GAD-7</div>
+            <div class="tech-cat">Clinical Instruments</div>
+            <div class="tech-desc">Kroenke (2002), Spitzer (2006) — widely used depression &amp; anxiety scales</div>
+          </div>
+          <div class="tech-item">
+            <div class="tech-icon">💡</div>
+            <div class="tech-name">LIME Explainability</div>
+            <div class="tech-cat">XAI</div>
+            <div class="tech-desc">Word-level saliency highlighting for interpretable AI decisions</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── SESSION DATA + COMMUNITY LOG ──────────────────── (Ocean Tinted) -->
+      <div class="landing-section ls-ocean-subtle" style="padding-bottom:40px">
+        <div class="ls-label-row">
+          <span class="ls-section-num">05</span>
+          <span class="ls-section-dash">—</span>
+          <span class="ls-section-title">LIVE DATA</span>
+        </div>
+        <div class="live-data-header">
+          <div>
+            <h2 class="section-heading section-heading-ocean" style="margin-bottom:6px">Your Wellness Dashboard</h2>
+            <p class="section-body" style="margin:0">Real-time aggregation of all sessions from your device.</p>
+          </div>
+          <div class="dash-hdr-btns">
+            <button class="btn btn-secondary" onclick="clinicalSummary.openModal()" title="Export HL7 FHIR &amp; 1-page clinical summary">
+              🩺 Clinical Summary
+            </button>
+            <button class="btn btn-secondary btn-wrap" onclick="WrapEngine.launch()" title="View your monthly emotional story">
+              ✨ Monthly Wrap
+            </button>
+            <button class="btn btn-primary btn-new-checkin" onclick="app.navigate('checkin')">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              New Check-in
+            </button>
+          </div>
+        </div>
+
+        <!-- ── Micro Check-in + Streak Badge ─────────────────────────────── -->
+        <div class="micro-streak-row">
+          <!-- Quick mood log -->
+          <div class="glass-card micro-card">
+            <div class="micro-card-header">
+              <span class="micro-card-icon">⚡</span>
+              <div>
+                <h3 class="micro-card-title">Quick Mood Log</h3>
+                <p class="micro-card-sub">One tap — no writing needed</p>
+              </div>
+            </div>
+            <div id="micro-widget"><!-- filled by streak.js --></div>
+          </div>
+          <!-- Streak badge -->
+          <div class="glass-card streak-badge-card">
+            <div class="micro-card-header">
+              <span class="micro-card-icon">🏅</span>
+              <div>
+                <h3 class="micro-card-title">Consistency Streak</h3>
+                <p class="micro-card-sub">Check in daily to level up</p>
+              </div>
+            </div>
+            <div id="streak-badge-widget"><!-- filled by streak.js --></div>
+          </div>
+        </div>
+
+        <!-- Stat cards row -->
+        <div class="stats-grid">
+          <div class="stat-card" id="stat-total">
+            <div class="stat-card-top">
+              <div class="stat-icon stat-icon-ocean">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </div>
+              <span class="stat-delta" id="stat-delta-total">+0</span>
+            </div>
+            <div class="stat-value" id="stat-total-v2">0</div>
+            <div class="stat-label">Total Check-ins</div>
+            <canvas class="stat-sparkline" id="sparkline-total" width="120" height="32"></canvas>
+          </div>
+          <div class="stat-card" id="stat-streak">
+            <div class="stat-card-top">
+              <div class="stat-icon stat-icon-amber">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M8 12l2 2 4-4" stroke-linecap="round"/></svg>
+              </div>
+              <span class="stat-delta stat-delta-amber" id="stat-streak-label">🔥 days</span>
+            </div>
+            <div class="stat-value" id="stat-streak-v2">0</div>
+            <div class="stat-label">Day Streak</div>
+            <div class="streak-flames" id="streak-flames"></div>
+          </div>
+          <div class="stat-card" id="stat-risk">
+            <div class="stat-card-top">
+              <div class="stat-icon stat-icon-purple">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+              </div>
+              <span class="stat-delta" id="stat-delta-risk">Avg Risk</span>
+            </div>
+            <div class="stat-value" id="stat-risk-v2">—</div>
+            <div class="stat-label">Average Risk Score</div>
+            <div class="risk-mini-bar-wrap"><div class="risk-mini-bar" id="risk-mini-bar"></div></div>
+          </div>
+          <div class="stat-card" id="stat-reports">
+            <div class="stat-card-top">
+              <div class="stat-icon stat-icon-rose">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              </div>
+              <span class="stat-delta stat-delta-rose" id="stat-reports-label">Generated</span>
+            </div>
+            <div class="stat-value" id="stat-reports-v2">0</div>
+            <div class="stat-label">Reports Generated</div>
+          </div>
+        </div>
+
+        <!-- Dashboard body: sessions + donut -->
+        <div class="dashboard-body">
+          <div class="glass-card sessions-card">
+            <div class="card-header-row">
+              <h3 class="card-section-title">Recent Sessions</h3>
+              <button class="btn-text-link" onclick="app.navigate('tracker')">View all →</button>
+            </div>
+            <div class="sessions-table-wrap">
+              <table class="sessions-table" id="sessions-table">
+                <thead><tr>
+                  <th>SESSION / RESPONDENT</th>
+                  <th>RISK LEVEL</th>
+                  <th>SCORE</th>
+                  <th>DATE</th>
+                  <th>ACTION</th>
+                </tr></thead>
+                <tbody id="sessions-tbody">
+                  <tr><td colspan="5" class="empty-sessions">No sessions yet. Start your first check-in!</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="dashboard-right">
+            <div class="glass-card donut-card">
+              <h3 class="card-section-title">Risk Distribution</h3>
+              <div class="donut-wrap">
+                <canvas id="donut-canvas" width="160" height="160"></canvas>
+                <div class="donut-center">
+                  <span class="donut-total" id="donut-total">0</span>
+                  <span class="donut-sub">Total</span>
+                </div>
+              </div>
+              <div class="donut-legend" id="donut-legend">
+                <div class="legend-item"><span class="legend-dot" style="background:#06d6a0"></span>Low Risk <span class="legend-val" id="leg-low">0 (0%)</span></div>
+                <div class="legend-item"><span class="legend-dot" style="background:#fbbf24"></span>Moderate <span class="legend-val" id="leg-mod">0 (0%)</span></div>
+                <div class="legend-item"><span class="legend-dot" style="background:#fb923c"></span>High Risk <span class="legend-val" id="leg-high">0 (0%)</span></div>
+                <div class="legend-item"><span class="legend-dot" style="background:#f471b5"></span>Severe <span class="legend-val" id="leg-sev">0 (0%)</span></div>
+              </div>
+            </div>
+            <div class="glass-card tips-card">
+              <h3 class="card-section-title">✨ Today's Tip</h3>
+              <div class="tip-content" id="daily-tip"></div>
+              <button class="btn-text-link" onclick="dashboard.nextTip()">Next tip →</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Community Log -->
+        <div class="glass-card community-log-card">
+          <div class="card-header-row">
+            <div>
+              <h3 class="card-section-title">👥 Community Log</h3>
+              <p style="font-size:0.75rem;color:var(--text-muted);margin-top:2px">All check-ins from your shared circle — <span id="community-count-2">0</span> people tracked</p>
+            </div>
+            <button class="btn btn-ghost btn-sm" onclick="dashboard.exportCSV()">⬇ Export CSV</button>
+          </div>
+          <div class="sessions-table-wrap">
+            <table class="sessions-table">
+              <thead><tr>
+                <th>PERSON</th>
+                <th>LATEST RISK</th>
+                <th>AVG SCORE</th>
+                <th>LAST SEEN</th>
+                <th>ACTION</th>
+              </tr></thead>
+              <tbody id="community-log-body">
+                <tr><td colspan="5" class="empty-sessions">No community entries yet.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div id="person-detail-panel" class="person-detail-panel"></div>
+        </div>
+      </div>
+
+      <!-- ─── ETHICS + CTA FOOTER ────────────────────────────── (Rose Tinted) -->
+      <div class="landing-section ls-rose" style="padding-bottom:60px">
+        <div class="ls-label-row">
+          <span class="ls-section-num">06</span>
+          <span class="ls-section-dash">—</span>
+          <span class="ls-section-title">ETHICS &amp; RESEARCH IMPACT</span>
+        </div>
+        <div class="ethics-cta-grid">
+          <div class="ethics-block">
+            <h2 class="section-heading section-heading-rose">Built for India. Built on Science.</h2>
+            <p class="section-body">
+              India faces a <strong>mental health treatment gap of over 83%</strong> — fewer than 1 in 6 people
+              with mental illness receive treatment. MindBridge addresses this through three principles:
+            </p>
+            <div class="ethics-principles">
+              <div class="ep-item"><span class="ep-num" style="color:var(--ocean)">01</span><div><strong>Accessibility</strong> — Works on any device with a browser. No app install. No data plan concern. Fully offline after first load.</div></div>
+              <div class="ep-item"><span class="ep-num" style="color:var(--purple)">02</span><div><strong>Stigma Reduction</strong> — Private, anonymous analysis removes the barrier of social stigma that prevents millions from seeking help.</div></div>
+              <div class="ep-item"><span class="ep-num" style="color:var(--amber)">03</span><div><strong>Evidence-Based</strong> — Every feature references peer-reviewed clinical literature. Word-level explanations show which words influenced the score.</div></div>
+            </div>
+            <div class="ethics-disclaimer" id="about-live-status" style="margin-bottom:12px">
+              🔎 <strong>What is running right now:</strong> <span id="about-model-status">checking emotion model…</span><br/>
+              <strong>Known limitations:</strong> fusion weights are hand-chosen, not fitted to data · voice and face measures are experimental (browser microphone / camera) · the word-list scoring is a heuristic, not the trained model from the paper · none of the composite scores have been validated in a clinical study.
+            </div>
+            <div class="ethics-disclaimer">
+              ⚠️ MindBridge is a <strong>screening and support tool</strong>, not a clinical diagnostic instrument. PHQ-9 and GAD-7 results should be reviewed by a qualified mental health professional. If you are in crisis, use the 🆘 Help Now button immediately.
+            </div>
+          </div>
+          <div class="cta-block">
+            <div class="cta-card">
+              <div class="cta-card-icon">🚀</div>
+              <h3>Ready to begin?</h3>
+              <p>Start your first AI-powered wellness check-in now. Takes under 3 minutes.</p>
+              <button class="btn btn-primary" style="width:100%;justify-content:center;margin-bottom:10px;font-size:1rem;padding:14px" onclick="app.navigate('checkin')">Start Check-in</button>
+              <button class="btn btn-ghost" style="width:100%;justify-content:center" onclick="app.navigate('phq9')">📋 PHQ-9 Clinical Screen</button>
+              <div class="cta-refs">
+                <strong>References</strong>
+                <p>Kroenke K, et al. Psychosomatics 2002 · Spitzer RL, et al. Arch Intern Med 2006 · Pennebaker JW, APA 2004 · Wolf M, et al. EMNLP 2020 (Transformers) · Hartmann J. 2022 (emotion-english-distilroberta-base)</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
