@@ -2,112 +2,91 @@
 
 > *Built from a conference paper. Deployed as a live app.*
 
-**Explainable AI for Early Prediction of Anxiety and Depression in India** — a dual-modality XAI framework turned into a browser-accessible mental health tool.
+**Live demo:** https://mindbridgehealth-ai.netlify.app/
+
+MindBridge is a browser-based, on-device **research prototype** for mental-wellness screening. It combines text emotion analysis, vocal features, PHQ-9 / GAD-7 questionnaires and word-level explanations in one privacy-first web app. It is **not** a clinical diagnostic tool.
 
 ---
 
-## The Problem
+## Research background
 
-India has a 13.7% prevalence of mental disorders, with 280 million affected globally. Early detection remains limited due to stigma, underreporting, and AI systems that give predictions without explanations. A black-box model in mental health is not just unhelpful — it can be harmful.
+The app grew out of the paper *"Explainable AI For Early Prediction of Anxiety and Depression in India: A Dual-Modality Framework"* (Bhardwaj & Bharadvaja), accepted and presented at IC3-2026. Proceedings are being published by IEEE.
 
----
+The paper describes a two-phase framework:
 
-## The Research Behind It
+- **Phase 1 – Lifestyle risk:** XGBoost + SMOTE on tabular lifestyle data (~80% accuracy), explained with SHAP.
+- **Phase 2 – Text analysis:** TF-IDF + XGBoost on 53,000+ statements (93.73% accuracy, 96.10% precision), explained with LIME.
 
-This app is built from a conference paper — *"Explainable AI for Early Prediction of Anxiety and Depression in India: A Dual-Modality Framework"* — currently submitted for review.
-
-The paper proposes a two-phase XAI framework:
-
-**Phase 1 — Lifestyle Risk Analysis**
-- 1,200 records covering sleep, activity, stress and social support
-- XGBoost + SMOTE → ~80% accuracy
-- SHAP for global feature importance — the model explains *why* it flagged a risk
-
-**Phase 2 — Behavioral Text Analysis**
-- 53,000+ text statements
-- TF-IDF + XGBoost → 93.73% accuracy · 96.10% precision
-- LIME for word-level reasoning — highlights exactly which words drove the prediction
+The trained Phase 1/Phase 2 models (`models/*.pkl`) are used by the optional Flask backend (`app.py`). **The live browser app runs without the backend** (see below).
 
 ---
 
-## What the App Does
+## What the live app does today
 
-MindBridge takes the research off the page and into a browser — accessible to anyone with a phone or laptop.
-
-| Feature | Description |
+| Feature | How it works |
 | --- | --- |
-| 📊 Lifestyle Tracker | Daily sleep, activity and stress logs mapped to Phase 1 |
-| 💬 NLP Text Check-in | Emotional text input with LIME-style word attribution |
-| 🎙️ Vocal Biomarkers | Real-time pitch, RMS energy, jitter and shimmer via WebAudio API |
-| 🤖 BERT Emotion AI | Emotion classification via Transformers.js in-browser |
-| 📋 PHQ-9 & GAD-7 | WHO-validated depression and anxiety screening |
-| 🌐 Bilingual Support | Hindi and English language support |
-| 📓 Private Journal | In-app journaling for self-reflection |
-| 🧘 CBT Exercises | Cognitive behavioural therapy exercises |
-| 🆘 Crisis Helplines | Direct links to India mental health crisis helplines |
+| Text emotion | Pretrained **DistilRoBERTa** emotion classifier (`Bachkippe/emotion-english-distilroberta-base_onnx`) run in the browser with Transformers.js. English only. |
+| Hindi-English text | Rule-based lexicon with negation handling (simpler than the transformer path) |
+| Word-level explanation | Per-word contribution from the lexicon (LIME-style, not LIME run on the model) |
+| Vocal features | Web Audio API: pitch (F0), energy, monotony, jitter, shimmer, speech rate, pause ratio. Simple DSP, not Praat-grade. |
+| Facial affect | Experimental, in-browser |
+| Screening | PHQ-9 and GAD-7 questionnaires (public-domain instruments), with a crisis alert on item 9 |
+| Risk score | Hand-weighted fusion: **40% text + 30% voice + 30% face** (weights re-normalised when a modality is missing) |
+| Also included | Lifestyle tracker, private journal, CBT exercises, FHIR-style summary export, crisis helplines (including Tele-MANAS 14416) |
+
+All processing happens in the user's browser. Nothing is uploaded and the app has no accounts.
 
 ---
 
-## Tech Stack
+## Honest limitations
 
-| Layer | Technology |
-| --- | --- |
-| **Backend** | Python, Flask, Flask-CORS |
-| **ML Models** | XGBoost, scikit-learn, joblib |
-| **NLP** | TF-IDF Vectorizer, clinical heuristic lexicon |
-| **Explainability** | SHAP (Phase 1), LIME-style attribution (Phase 2) |
-| **Frontend** | HTML, CSS, JavaScript |
-| **Browser AI** | MediaPipe, Transformers.js, WebAudio API |
-| **Screening** | PHQ-9, GAD-7 (WHO-validated) |
-| **Deployment** | Vercel |
+- This is a **research demonstrator, not a validated diagnostic tool.** It does not diagnose, and it is not a substitute for professional care.
+- The fusion weights are hand-chosen and have **not** been validated against clinical ground truth.
+- The emotion model is English-only and can be wrong on sarcasm, mixed emotions, and short or ambiguous text.
+- The browser app does **not** yet run the paper's trained XGBoost/TF-IDF models. Those are served only by the optional Flask backend.
+- Vocal and facial features are exploratory and have not been clinically evaluated.
+- The app has not been tested for HIPAA / GDPR compliance.
 
----
-
-## API Endpoints
-
-| Endpoint | Method | Description |
-| --- | --- | --- |
-| `/health` | GET | Model status and version check |
-| `/predict` | POST | NLP text analysis → risk score + word contributions |
-| `/predict_lifestyle` | POST | Lifestyle data → XGBoost Phase 1 risk score |
-| `/phq9` | POST | PHQ-9 depression screening (9 answers, 0–3 scale) |
-| `/gad7` | POST | GAD-7 anxiety screening (7 answers, 0–3 scale) |
+**Roadmap**
+- [ ] Clinical validation of the risk score, especially for Hindi-English text
+- [ ] Deploy the Phase 1/2 XGBoost models for the browser app
+- [ ] Model-based SHAP / LIME explanations
+- [ ] Multilingual emotion model
 
 ---
 
-## Honest Disclaimer
+## Repository layout
 
-The browser app currently uses research-inspired heuristics that approximate the paper's concepts — not the exact trained models. It is a **research demonstrator, not a clinical diagnostic tool**.
+```
+index.html, manifest.json, sw.js   Web app entry points (PWA)
+css/ js/ icons/ assets/            Front-end code and assets
+app.py, requirements.txt           Optional Flask backend (paper models)
+models/                            Trained Phase 1 / Phase 2 pickles (sklearn 1.6.1)
+```
 
-Work in progress:
-- [ ] Integrating the full XGBoost Phase 1 lifestyle model
-- [ ] Retraining and deploying the TF-IDF + XGBoost Phase 2 NLP pipeline
-- [ ] Moving toward full model-based SHAP/LIME explainability
+## Run locally
 
----
+Front-end only (no install needed): serve the folder, e.g. `python -m http.server 8000`, then open http://localhost:8000. (Opening `index.html` directly can block the service worker and the model download.)
 
-## Run Locally
+Optional backend:
 
 ```bash
-git clone https://github.com/Srimant1323/MindBridge-app.git
-cd MindBridge-app
 pip install -r requirements.txt
 python app.py
 ```
 
-Then open `index.html` in your browser.
+Then set `BACKEND_URL` in `js/app.js` to your backend address. It is empty by default, so the app uses the browser models only.
+
+## Deployment
+
+Front-end: Netlify (static). Backend (optional): any Python host (e.g. Render).
 
 ---
 
 ## Author
 
-**Srimant Bhardwaj**
-M.Tech Bioinformatics · Delhi Technological University (DTU)
+**Srimant Bhardwaj**, M.Tech Bioinformatics, Delhi Technological University (DTU)
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Srimant_Bhardwaj-blue)](https://www.linkedin.com/in/srimant-bhardwaj-13s23a)
-[![GitHub](https://img.shields.io/badge/GitHub-Srimant1323-black)](https://github.com/Srimant1323)
-[![ORCID](https://img.shields.io/badge/ORCID-0009--0007--6395--1216-brightgreen?logo=orcid)](https://orcid.org/0009-0007-6395-1216)
-
----
+[LinkedIn](https://www.linkedin.com/in/srimant-bhardwaj-13s23a) · [GitHub](https://github.com/Srimant1323) · [ORCID](https://orcid.org/0009-0007-6395-1216)
 
 *Built because transparent AI has to start with a transparent researcher.*
