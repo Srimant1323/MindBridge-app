@@ -17,18 +17,24 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 
 app = Flask(__name__)
+# Set ALLOWED_ORIGINS to your Netlify URL in production, e.g. https://mindbridgehealth-ai.netlify.app
 CORS(app, origins=os.getenv("ALLOWED_ORIGINS", "*").split(","))
 
-MODELS_DIR = os.path.join(os.path.dirname(__file__), "models")
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODELS_DIR = os.path.join(BASE_DIR, "models") if os.path.isdir(os.path.join(BASE_DIR, "models")) else BASE_DIR
 
 def load(filename):
-    path = os.path.join(MODELS_DIR, filename)
-    if not os.path.exists(path):
-        print(f"⚠️  Not found: {path}")
-        return None
-    obj = joblib.load(path)
-    print(f"✅ Loaded: {filename}")
-    return obj
+    for candidate_dir in [MODELS_DIR, BASE_DIR, os.path.join(BASE_DIR, "models")]:
+        path = os.path.join(candidate_dir, filename)
+        if os.path.exists(path):
+            try:
+                obj = joblib.load(path)
+                print(f"✅ Loaded: {filename} from {candidate_dir}")
+                return obj
+            except Exception as e:
+                print(f"⚠️ Error loading {filename} from {path}: {e}")
+    print(f"⚠️ Not found: {filename} in {BASE_DIR}")
+    return None
 
 model_phase1       = load("xgboost_phase1.pkl")
 _vectorizer_raw    = load("tfidf_vectorizer.pkl")
@@ -38,7 +44,17 @@ def _validate_phase2():
     if _vectorizer_raw is None or _model_phase2_raw is None:
         return False
     try:
-        X = _vectorizer_raw.transform(["the sky is blue today"])
+        # IMPORTANT: XGBoost treats implicit zeros in a scipy sparse matrix as
+        # "missing" rather than "value is 0". A TF-IDF row is ~99% zeros, so
+        # predicting on the raw sparse output sends nearly every split down
+        # the model's missing-value branch regardless of actual content —
+        # this is what was previously causing the ~99% constant-output bug
+        # that made this function wrongly disqualify a perfectly good model.
+        # .toarray() matches how the model was almost certainly trained
+        # (dense TF-IDF), so zeros are treated as real zeros again.
+        X = _vectorizer_raw.transform(["the sky is blue today"]).toarray()
+        classes = list(getattr(_model_phase2_raw, 'classes_', [0, 1]))
+        print('Phase2 classes_:', classes, '(code assumes column 1 = at-risk; confirm this)')
         p = _model_phase2_raw.predict_proba(X)[0][1]
         if p > 0.95:
             print("⚠️  xgboost_phase2.pkl returns degenerate predictions — needs retraining.")
@@ -59,7 +75,10 @@ print(f"📊 Lifestyle model: {'xgboost_phase1 ✅' if LIFESTYLE_READY else 'una
 # ── Clinical Heuristic ────────────────────────────────────────────────────────
 SEVERE    = {'suicide':3.5,'suicidal':3.5,'kill myself':3.5,'want to die':3.5,
              'end my life':3.5,'hopeless':3.0,'worthless':3.0,'meaningless':3.0,
-             'marna chahta':3.5,'marna chahti':3.5,'zindagi se tang':3.0}
+             'marna chahta':3.5,'marna chahti':3.5,'zindagi se tang':3.0,
+             'leave this world':3.5,'go to heaven':3.0,'going to heaven':3.0,
+             'go to a better place':3.0,'no longer be a burden':3.0,
+             'eternal sleep':3.0,'permanent sleep':3.0}
 HIGH      = {'empty':2.0,'numb':2.0,'trapped':2.0,'burden':2.0,'despair':2.0,
              'broken':2.0,'failure':2.0,'useless':2.0,'abandoned':2.0,
              'dead inside':2.5,'hate myself':2.5,'nirasha':2.0,'tanha':2.0}
@@ -72,21 +91,50 @@ PROTECTIVE= {'happy':-1.5,'grateful':-1.5,'hopeful':-1.5,'calm':-1.5,'peaceful':
 
 CRISIS_TERMS = list(SEVERE.keys())
 
+# ── Euphemism safety net (crisis-flag only, not already scored in SEVERE) ──
+# The trained XGBoost model can under-score indirect/euphemistic phrasing
+# if such phrasing was rare in its 53k-statement training corpus — that's a
+# genuine model-coverage gap, not a code bug. This list is checked
+# independently of the model's score, exactly like the equivalent guard on
+# the frontend (app.js hasCrisisLanguage), so a low model score alone can
+# never suppress a crisis flag for these phrases.
+EUPHEMISMS = [
+    "don't wake up tomorrow", "wont wake up tomorrow",
+    'set myself free', 'with the angels', 'meet my maker',
+]
+
+_NEG = r"(?:not|never|no|dont|don't|cant|can't|doesnt|doesn't|isnt|isn't|barely|hardly)"
+
+def _has_phrase(t, phrase):
+    return re.search(r'(?<!\w)' + re.escape(phrase) + r'(?!\w)', t) is not None
+
+def _negated(t, phrase):
+    return re.search(r'\b' + _NEG + r'\s+(?:\w+\s+){0,2}' + re.escape(phrase) + r'(?!\w)', t) is not None
+
+def has_crisis_phrase(text):
+    t = text.lower().replace("’", "'")
+    return any(_has_phrase(t, c) for c in CRISIS_TERMS + EUPHEMISMS)
+
 def heuristic_nlp(text):
-    t = text.lower()
+    t = text.lower().replace("’", "'")
     raw, contributions = 0.0, {}
     for lexicon in [SEVERE, HIGH, MODERATE, PROTECTIVE]:
         for phrase, weight in lexicon.items():
-            if phrase in t:
-                contributions[phrase] = round(weight, 2)
-                raw += weight
+            # whole-word match (so 'sad' does not match 'persuade', 'content' not 'contents')
+            if not _has_phrase(t, phrase):
+                continue
+            # a negated positive word ("not happy") must not lower the risk score
+            if weight < 0 and _negated(t, phrase):
+                continue
+            contributions[phrase] = round(weight, 2)
+            raw += weight
     wc = max(len(text.split()), 4)
     rn = raw / (wc ** 0.5)
     if rn <= 0:    score = max(0, 12 + rn * 8)
     elif rn < 0.3: score = 25 + rn * 80
     elif rn < 1.0: score = 49 + rn * 26
     else:          score = min(100, 75 + (rn - 1.0) * 12)
-    if any(c in t for c in CRISIS_TERMS): score = max(score, 75)
+    if any(_has_phrase(t, c) for c in CRISIS_TERMS): score = max(score, 75)
     return int(round(score)), contributions
 
 def risk_band(s):
@@ -115,17 +163,22 @@ def health():
 @app.route('/predict', methods=['POST', 'OPTIONS'])
 def predict():
     if request.method == 'OPTIONS': return jsonify({}), 200
-    data = request.get_json(silent=True) or {}
-    text = (data.get('text') or '').strip()
+    data = request.get_json(silent=True)
+    if not isinstance(data, dict): return jsonify({'error': 'JSON object required'}), 400
+    text = data.get('text')
+    if not isinstance(text, str): return jsonify({'error': 'text must be a string'}), 400
+    text = text.strip()
     if not text: return jsonify({'error': 'text field is required'}), 400
     if len(text) > 5000: return jsonify({'error': 'Text too long'}), 400
     try:
         if NLP_MODEL_VALID:
-            X     = vectorizer.transform([text])
+            # .toarray(): see comment in _validate_phase2 — must feed dense
+            # data so TF-IDF zeros are treated as real zeros, not "missing".
+            X = vectorizer.transform([text]).toarray()
             prob  = float(model_phase2.predict_proba(X)[0][1])
             score = int(prob * 100)
             feature_names = vectorizer.get_feature_names_out()
-            tfidf_vals    = X.toarray()[0]
+            tfidf_vals    = X[0]
             top_idx       = tfidf_vals.argsort()[-15:][::-1]
             contributions = {feature_names[i]: round(float(tfidf_vals[i]*prob*10),3)
                              for i in top_idx if tfidf_vals[i] > 0}
@@ -133,7 +186,7 @@ def predict():
         else:
             score, contributions = heuristic_nlp(text)
             model_used = 'clinical_heuristic'
-        crisis = any(c in text.lower() for c in CRISIS_TERMS) or score >= 75
+        crisis = has_crisis_phrase(text) or score >= 75
         return jsonify({'score':score,'risk_level':risk_band(score),
                         'crisis':crisis,'contributions':contributions,'model_used':model_used})
     except Exception as e:
@@ -149,16 +202,24 @@ def predict_lifestyle():
     if missing: return jsonify({'error': f'Missing fields: {missing}'}), 400
     try:
         row  = np.array([[data[f] for f in PHASE1_FEATURES]], dtype=float)
+        if not np.isfinite(row).all(): return jsonify({'error': 'All fields must be finite numbers'}), 400
         prob = float(model_phase1.predict_proba(row)[0][1])
         return jsonify({'score':int(prob*100),'risk_level':risk_band(int(prob*100)),'model_used':'xgboost_phase1'})
     except Exception as e:
         return jsonify({'error': 'Prediction failed', 'detail': str(e)}), 500
 
+def _clean_answers(data, n):
+    if not isinstance(data, dict): return None
+    a = data.get('answers')
+    if not isinstance(a, list) or len(a) != n: return None
+    if not all(isinstance(x, int) and not isinstance(x, bool) and 0 <= x <= 3 for x in a): return None
+    return a
+
 @app.route('/phq9', methods=['POST', 'OPTIONS'])
 def phq9():
     if request.method == 'OPTIONS': return jsonify({}), 200
-    answers = (request.get_json(silent=True) or {}).get('answers', [])
-    if len(answers) != 9: return jsonify({'error': 'Provide 9 answers (0-3)'}), 400
+    answers = _clean_answers(request.get_json(silent=True), 9)
+    if answers is None: return jsonify({'error': 'Provide 9 integer answers, each 0-3'}), 400
     total = sum(answers)
     sev = 'Minimal' if total<=4 else 'Mild' if total<=9 else 'Moderate' if total<=14 else 'Moderately Severe' if total<=19 else 'Severe'
     return jsonify({'total':total,'severity':sev,'crisis':answers[8]>=1,'max_possible':27,'percentage':round(total/27*100,1)})
@@ -166,8 +227,8 @@ def phq9():
 @app.route('/gad7', methods=['POST', 'OPTIONS'])
 def gad7():
     if request.method == 'OPTIONS': return jsonify({}), 200
-    answers = (request.get_json(silent=True) or {}).get('answers', [])
-    if len(answers) != 7: return jsonify({'error': 'Provide 7 answers (0-3)'}), 400
+    answers = _clean_answers(request.get_json(silent=True), 7)
+    if answers is None: return jsonify({'error': 'Provide 7 integer answers, each 0-3'}), 400
     total = sum(answers)
     sev = 'Minimal' if total<=4 else 'Mild' if total<=9 else 'Moderate' if total<=14 else 'Severe'
     return jsonify({'total':total,'severity':sev,'max_possible':21,'percentage':round(total/21*100,1)})
